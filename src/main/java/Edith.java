@@ -17,6 +17,8 @@ public class Edith {
                       + "| |__| (_| | | |_| | | |\n"
                       + "|_____\\__,_|_|\\__|_| |_|\n";
         String line = "____________________________________________________";
+        String[] tasks = new String[100];
+        int taskCount = 0;
 
         System.out.println(line);
         System.out.println(banner);
@@ -25,7 +27,7 @@ public class Edith {
         System.out.println(line);
 
         try (Scanner scanner = new Scanner(System.in)) {            
-            while (true) {
+            while (scanner.hasNextLine()) {
                 String command = scanner.nextLine();
                 
                 System.out.println(line);
@@ -34,10 +36,17 @@ public class Edith {
                     System.out.println("\tBye. Hope to see you again soon!");
                     System.out.println(line);
                     break;
+                } else if (command.equals("list")) {
+                    for (int i = 0; i < taskCount; i++) {
+                        System.out.println("\t" + (i + 1) + ". " + tasks[i]);
+                    }
+                    System.out.println(line);
+                } else if (taskCount < tasks.length) {
+                    tasks[taskCount] = command;
+                    taskCount++;
+                    System.out.println("\tadded: " + command);
+                    System.out.println(line);
                 }
-
-                System.out.println("\t" + command + " " + command + " " + command);
-                System.out.println(line);
             }
         }
     }
