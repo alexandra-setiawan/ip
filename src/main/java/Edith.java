@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 /**
- * Edith is a chatbot that echoes user commands until the user says goodbye.
+ * Edith is a chatbot that stores tasks and can mark them as done.
  */
 
 public class Edith {
@@ -17,7 +17,7 @@ public class Edith {
                       + "| |__| (_| | | |_| | | |\n"
                       + "|_____\\__,_|_|\\__|_| |_|\n";
         String line = "____________________________________________________";
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int taskCount = 0;
 
         System.out.println(line);
@@ -35,15 +35,42 @@ public class Edith {
                 if (command.equals("bye")) {
                     System.out.println("\tBye. Hope to see you again soon!");
                     System.out.println(line);
+
                     break;
+
                 } else if (command.equals("list")) {
+                    System.out.println("\tHere are the tasks in your list:");
+
                     for (int i = 0; i < taskCount; i++) {
-                        System.out.println("\t" + (i + 1) + ". " + tasks[i]);
+                        System.out.println("\t" + (i + 1) + "." + tasks[i]);
                     }
+
                     System.out.println(line);
+
+                } else if (command.startsWith("mark ")) {
+                    int taskNumber = Integer.parseInt(command.substring(5));
+                    int taskIndex = taskNumber - 1;
+
+                    tasks[taskIndex].markAsDone();
+
+                    System.out.println("\tNice! I've marked this task as done:");
+                    System.out.println("\t  " + tasks[taskIndex]);
+                    System.out.println(line);
+
+                } else if (command.startsWith("unmark ")) {
+                    int taskNumber = Integer.parseInt(command.substring(7));
+                    int taskIndex = taskNumber - 1;
+
+                    tasks[taskIndex].unmarkAsDone();
+
+                    System.out.println("\tOK, I've marked this task as not done yet:");
+                    System.out.println("\t  " + tasks[taskIndex]);
+                    System.out.println(line);
+                    
                 } else if (taskCount < tasks.length) {
-                    tasks[taskCount] = command;
+                    tasks[taskCount] = new Task(command);
                     taskCount++;
+
                     System.out.println("\tadded: " + command);
                     System.out.println(line);
                 }
