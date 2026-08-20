@@ -112,3 +112,37 @@ ____________________________________________________
 	Bye. Hope to see you again soon!
 ____________________________________________________
 ```
+
+### Test case: reject invalid commands
+
+Aim: Verify that Edith reports an empty to-do description and an unknown command without ending the session.
+
+Input:
+```text
+todo
+blah
+bye
+```
+
+Expected output:
+```text
+____________________________________________________
+ _____    _ _ _   _     
+| ____|__| (_) |_| |__  
+|  _| / _` | | __| '_ \ 
+| |__| (_| | | |_| | | |
+|_____\__,_|_|\__|_| |_|
+
+	Hello! I'm Edith.
+	What can I do for you?
+____________________________________________________
+____________________________________________________
+	OOPS!!! The description of a todo cannot be empty.
+____________________________________________________
+____________________________________________________
+	OOPS!!! I'm sorry, but I don't know what that means :-(
+____________________________________________________
+____________________________________________________
+	Bye. Hope to see you again soon!
+____________________________________________________
+```
