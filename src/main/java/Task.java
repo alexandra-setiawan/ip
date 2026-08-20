@@ -5,8 +5,8 @@ public class Task {
     /** The description supplied by the user. */
     protected String description;
 
-    /** Whether this task has been completed. */
-    protected boolean isDone;
+    /** The current completion status of this task. */
+    protected TaskStatus status;
 
     /**
      * Creates a task that is initially not done.
@@ -15,7 +15,7 @@ public class Task {
      */
     public Task(String description) {
         this.description = description;
-        this.isDone = false;
+        this.status = TaskStatus.NOT_DONE;
     }
 
     /**
@@ -24,17 +24,17 @@ public class Task {
      * @return {@code X} for a completed task, otherwise a space
      */
     public String getStatusIcon() {
-        return isDone ? "X" : " ";
+        return status.getIcon();
     }
 
     /** Marks this task as complete. */
     public void markAsDone() {
-        isDone = true;
+        status = TaskStatus.DONE;
     }
 
     /** Marks this task as not yet complete. */
     public void unmarkAsDone() {
-        isDone = false;
+        status = TaskStatus.NOT_DONE;
     }
 
     /**
