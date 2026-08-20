@@ -6,6 +6,24 @@ import java.util.Scanner;
 
 public class Edith {
     /**
+     * Adds a task and shows the confirmation used for all task types.
+     *
+     * @param tasks the task list
+     * @param taskCount the number of tasks before the new task is added
+     * @param task the task to add
+     * @param line the output separator line
+     * @return the number of tasks after adding the task
+     */
+    private static int addTask(Task[] tasks, int taskCount, Task task, String line) {
+        tasks[taskCount] = task;
+        System.out.println("\tGot it. I've added this task:");
+        System.out.println("\t  " + task);
+        System.out.println("\tNow you have " + (taskCount + 1) + " tasks in the list.");
+        System.out.println(line);
+        return taskCount + 1;
+    }
+
+    /**
      * Starts the chatbot.
      * 
      * @param args command line arguments (not used)
@@ -66,13 +84,23 @@ public class Edith {
                     System.out.println("\tOK, I've marked this task as not done yet:");
                     System.out.println("\t  " + tasks[taskIndex]);
                     System.out.println(line);
-                    
+                
+                } else if (command.startsWith("todo ")) {
+                    taskCount = addTask(tasks, taskCount, new ToDo(command.substring(5)), line);
+                
+                } else if (command.startsWith("deadline ")) {
+                    String[] deadlineParts = command.substring(9).split(" /by ", 2);
+                    taskCount = addTask(tasks, taskCount,
+                            new Deadline(deadlineParts[0], deadlineParts[1]), line);
+                
+                } else if (command.startsWith("event ")) {
+                    String[] eventParts = command.substring(6).split(" /from ", 2);
+                    String[] timeParts = eventParts[1].split(" /to ", 2);
+                    taskCount = addTask(tasks, taskCount,
+                            new Event(eventParts[0], timeParts[0], timeParts[1]), line);
+                
                 } else if (taskCount < tasks.length) {
-                    tasks[taskCount] = new Task(command);
-                    taskCount++;
-
-                    System.out.println("\tadded: " + command);
-                    System.out.println(line);
+                    taskCount = addTask(tasks, taskCount, new ToDo(command), line);
                 }
             }
         }
