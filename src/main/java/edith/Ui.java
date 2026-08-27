@@ -18,17 +18,31 @@ public class Ui {
     public String readCommand() { return scanner.hasNextLine() ? scanner.nextLine() : null; }
     /** Shows the divider line. */
     public void showLine() { System.out.println(LINE); }
-    /** Prints the task list. */
+    /** Prints the task list.
+     * @param tasks tasks to display in their current order
+     */
     public void showList(TaskList tasks) { System.out.println("\tHere are the tasks in your list:"); for (int i = 0; i < tasks.size(); i++) System.out.println("\t" + (i + 1) + "." + tasks.get(i)); }
-    /** Prints an error message. */
+    /** Prints an error message.
+     * @param message error text to display
+     */
     public void showError(String message) { System.out.println("\t" + message); }
-    /** Shows the add confirmation. */
+    /** Shows the add confirmation.
+     * @param task task that was added
+     * @param count number of tasks after adding it
+     */
     public void showAddedTask(Task task, int count) { System.out.println("\tGot it. I've added this task:\n\t  " + task + "\n\tNow you have " + count + " tasks in the list."); }
-    /** Shows a completed-task confirmation. */
+    /** Shows a completed-task confirmation.
+     * @param task task that was marked done
+     */
     public void showMarked(Task task) { System.out.println("\tNice! I've marked this task as done:\n\t  " + task); }
-    /** Shows an uncompleted-task confirmation. */
+    /** Shows an uncompleted-task confirmation.
+     * @param task task that was marked not done
+     */
     public void showUnmarked(Task task) { System.out.println("\tOK, I've marked this task as not done yet:\n\t  " + task); }
-    /** Shows the delete confirmation. */
+    /** Shows the delete confirmation.
+     * @param task task that was removed
+     * @param count number of tasks after removing it
+     */
     public void showDeletedTask(Task task, int count) { System.out.println("\tNoted. I've removed this task:\n\t  " + task + "\n\tNow you have " + count + " tasks in the list."); }
     /** Shows the farewell. */
     public void showBye() { System.out.println("\tBye. Hope to see you again soon!"); }
