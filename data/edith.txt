@@ -1,2 +1,2 @@
 T | 0 | read book
-D | 0 | return book | June 6th
+D | 0 | return book | 2019-12-02T18:00

@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 /**
  * Represents a task with a start time and an end time.
  */
@@ -7,6 +9,12 @@ public class Event extends Task {
 
     /** The end time or date text supplied by the user. */
     protected String to;
+
+    /** Parsed event start, when the input uses a supported date format. */
+    protected LocalDateTime fromDateTime;
+
+    /** Parsed event end, when the input uses a supported date format. */
+    protected LocalDateTime toDateTime;
 
     /**
      * Creates an event task.
@@ -19,6 +27,8 @@ public class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+        this.fromDateTime = DateTimeParser.parse(from);
+        this.toDateTime = DateTimeParser.parse(to);
     }
 
     @Override
@@ -28,7 +38,8 @@ public class Event extends Task {
 
     @Override
     public String toFileFormat() {
-        return super.toFileFormat() + " | " + from + " | " + to;
+        return super.toFileFormat() + " | " + (fromDateTime == null ? from : fromDateTime)
+                + " | " + (toDateTime == null ? to : toDateTime);
     }
 
     /**
@@ -38,6 +49,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        String displayFrom = fromDateTime == null ? from : DateTimeParser.format(fromDateTime);
+        String displayTo = toDateTime == null ? to : DateTimeParser.format(toDateTime);
+        return "[E]" + super.toString() + " (from: " + displayFrom + " to: " + displayTo + ")";
     }
 }
