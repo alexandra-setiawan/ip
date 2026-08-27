@@ -22,8 +22,8 @@ Aim: Verify that to-dos, deadlines, and events are stored with their type-specif
 Input:
 ```text
 todo borrow book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2019-12-02
+event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000
 list
 bye
 ```
@@ -47,19 +47,19 @@ _______________________________________________________________________________
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Got it. I've added this task:
-	  [D][ ] return book (by: Sunday)
+	  [D][ ] return book (by: Dec 2 2019)
 	Now you have 2 tasks in the list.
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Got it. I've added this task:
-	  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	  [E][ ] project meeting (from: Dec 2 2019 6:00pm to: Dec 2 2019 8:00pm)
 	Now you have 3 tasks in the list.
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Here are the tasks in your list:
 	1.[T][ ] borrow book
-	2.[D][ ] return book (by: Sunday)
-	3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+	2.[D][ ] return book (by: Dec 2 2019)
+	3.[E][ ] project meeting (from: Dec 2 2019 6:00pm to: Dec 2 2019 8:00pm)
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Bye. Hope to see you again soon!
