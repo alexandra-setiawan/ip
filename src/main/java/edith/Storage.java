@@ -11,10 +11,14 @@ import java.io.IOException;
 /** Loads and saves Edith's task list. */
 public class Storage {
     private final String filePath;
-    /** Creates storage backed by the given file path. */
+    /** Creates storage backed by the given file path.
+     * @param filePath path of the file used for persistence
+     */
     public Storage(String filePath) { this.filePath = filePath; }
 
-    /** Loads valid tasks from disk. */
+    /** Loads valid tasks from disk.
+     * @return the loaded tasks, or an empty list when no file is available
+     */
     public TaskList load() {
         TaskList tasks = new TaskList();
         File file = new File(filePath);
@@ -36,7 +40,9 @@ public class Storage {
         return tasks;
     }
 
-    /** Saves every task, replacing the previous file contents. */
+    /** Saves every task, replacing the previous file contents.
+     * @param tasks tasks to persist
+     */
     public void save(TaskList tasks) {
         File file = new File(filePath);
         File parent = file.getParentFile();

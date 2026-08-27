@@ -7,7 +7,11 @@ import edith.task.ToDo;
 
 /** Converts raw user commands into executable command objects. */
 public class Parser {
-    /** Parses a command and its arguments. */
+    /** Parses a command and its arguments.
+     * @param command raw command entered by the user
+     * @return executable command represented by the input
+     * @throws EdithException if the input is not a recognized command
+     */
     public static Command parse(String command) throws EdithException {
         if (command.equals("bye")) return new ExitCommand();
         if (command.equals("list")) return new ListCommand();
