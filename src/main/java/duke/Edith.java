@@ -1,3 +1,7 @@
+package duke;
+
+import duke.task.*;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;

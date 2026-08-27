@@ -1,3 +1,10 @@
+package duke.command;
+
+import duke.EdithException;
+import duke.Storage;
+import duke.Ui;
+import duke.task.TaskList;
+
 /** A parsed command that can be executed by Edith. */
 public abstract class Command {
     /** Executes this command. */

@@ -1,3 +1,10 @@
+package duke.command;
+
+import duke.Storage;
+import duke.Ui;
+import duke.task.Task;
+import duke.task.TaskList;
+
 /** Deletes a task and persists the updated list. */
 public class DeleteCommand extends Command {
     private final int index;
