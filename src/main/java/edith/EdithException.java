@@ -1,4 +1,4 @@
-package duke;
+package edith;
 
 /**
  * Represents an error caused by an invalid Edith command.

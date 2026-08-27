@@ -1,9 +1,9 @@
-package duke.command;
+package edith.command;
 
-import duke.EdithException;
-import duke.Storage;
-import duke.Ui;
-import duke.task.TaskList;
+import edith.EdithException;
+import edith.Storage;
+import edith.Ui;
+import edith.task.TaskList;
 
 /** A parsed command that can be executed by Edith. */
 public abstract class Command {

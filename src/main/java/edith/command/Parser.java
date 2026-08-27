@@ -1,9 +1,9 @@
-package duke.command;
+package edith.command;
 
-import duke.EdithException;
-import duke.task.Deadline;
-import duke.task.Event;
-import duke.task.ToDo;
+import edith.EdithException;
+import edith.task.Deadline;
+import edith.task.Event;
+import edith.task.ToDo;
 
 /** Converts raw user commands into executable command objects. */
 public class Parser {

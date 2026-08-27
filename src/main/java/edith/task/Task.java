@@ -1,4 +1,4 @@
-package duke.task;
+package edith.task;
 
 /**
  * Represents a task that Edith can track and mark as complete.

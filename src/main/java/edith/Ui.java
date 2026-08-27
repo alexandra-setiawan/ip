@@ -1,7 +1,7 @@
-package duke;
+package edith;
 
-import duke.task.Task;
-import duke.task.TaskList;
+import edith.task.Task;
+import edith.task.TaskList;
 
 import java.util.Scanner;
 

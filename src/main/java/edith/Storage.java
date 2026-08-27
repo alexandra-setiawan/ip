@@ -1,6 +1,6 @@
-package duke;
+package edith;
 
-import duke.task.*;
+import edith.task.*;
 
 import java.io.BufferedReader;
 import java.io.File;

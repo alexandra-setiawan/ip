@@ -1,6 +1,6 @@
-package duke;
+package edith;
 
-import duke.task.*;
+import edith.task.*;
 
 import java.util.ArrayList;
 import java.io.File;

@@ -1,4 +1,4 @@
-package duke.task;
+package edith.task;
 
 /**
  * Represents a task without an associated date or time.

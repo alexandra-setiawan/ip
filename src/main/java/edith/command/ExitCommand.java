@@ -1,8 +1,8 @@
-package duke.command;
+package edith.command;
 
-import duke.Storage;
-import duke.Ui;
-import duke.task.TaskList;
+import edith.Storage;
+import edith.Ui;
+import edith.task.TaskList;
 
 /** Ends the Edith session. */
 public class ExitCommand extends Command {

@@ -1,4 +1,4 @@
-package duke.task;
+package edith.task;
 
 /**
  * Represents the fixed completion states that a task can have.

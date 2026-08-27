@@ -1,9 +1,9 @@
-package duke.command;
+package edith.command;
 
-import duke.Storage;
-import duke.Ui;
-import duke.task.Task;
-import duke.task.TaskList;
+import edith.Storage;
+import edith.Ui;
+import edith.task.Task;
+import edith.task.TaskList;
 
 /** Adds a task and persists the updated list. */
 public class AddCommand extends Command {
