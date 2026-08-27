@@ -20,12 +20,16 @@ public final class DateTimeParser {
     /** Returns null for legacy free-form text that is not a supported date format. */
     public static LocalDateTime parse(String text) {
         try {
-            return LocalDateTime.parse(text, DATE_TIME_INPUT);
+            return LocalDateTime.parse(text);
         } catch (DateTimeParseException ignored) {
             try {
-                return LocalDate.parse(text, DATE_INPUT).atStartOfDay();
-            } catch (DateTimeParseException ignoredDate) {
-                return null;
+                return LocalDateTime.parse(text, DATE_TIME_INPUT);
+            } catch (DateTimeParseException ignoredTime) {
+                try {
+                    return LocalDate.parse(text, DATE_INPUT).atStartOfDay();
+                } catch (DateTimeParseException ignoredDate) {
+                    return null;
+                }
             }
         }
     }
