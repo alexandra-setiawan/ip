@@ -21,6 +21,16 @@ public class Event extends Task {
         this.to = to;
     }
 
+    @Override
+    protected String getTypeCode() {
+        return "E";
+    }
+
+    @Override
+    public String toFileFormat() {
+        return super.toFileFormat() + " | " + from + " | " + to;
+    }
+
     /**
      * Returns this task with its type, status, start, and end time.
      *

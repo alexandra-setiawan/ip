@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -6,6 +11,71 @@ import java.util.Scanner;
  */
 
 public class Edith {
+    /** File used to store the current task list. */
+    private static final String TASK_FILE = "./data/edith.txt";
+
+    /**
+     * Writes all tasks to disk using one human-readable line per task.
+     *
+     * @param tasks the current task list
+     */
+    private static void saveTasks(ArrayList<Task> tasks) {
+        File file = new File(TASK_FILE);
+        File parent = file.getParentFile();
+        if (parent != null) {
+            parent.mkdirs();
+        }
+
+        try (FileWriter writer = new FileWriter(file)) {
+            for (Task task : tasks) {
+                writer.write(task.toFileFormat());
+                writer.write(System.lineSeparator());
+            }
+        } catch (IOException error) {
+            System.out.println("\tOOPS!!! I could not save your tasks.");
+        }
+    }
+
+    /**
+     * Loads tasks from disk when a saved task file exists.
+     *
+     * @param tasks the list to populate
+     */
+    private static void loadTasks(ArrayList<Task> tasks) {
+        File file = new File(TASK_FILE);
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String savedTask;
+            while ((savedTask = reader.readLine()) != null) {
+                String[] parts = savedTask.split("\\s*\\|\\s*", -1);
+                if (parts.length < 3) {
+                    continue;
+                }
+
+                Task task;
+                if (parts[0].equals("T")) {
+                    task = new ToDo(parts[2]);
+                } else if (parts[0].equals("D") && parts.length == 4) {
+                    task = new Deadline(parts[2], parts[3]);
+                } else if (parts[0].equals("E") && parts.length == 5) {
+                    task = new Event(parts[2], parts[3], parts[4]);
+                } else {
+                    continue;
+                }
+
+                if (parts[1].equals("1")) {
+                    task.markAsDone();
+                }
+                tasks.add(task);
+            }
+        } catch (IOException error) {
+            // A missing or unreadable save file should not prevent Edith from starting.
+        }
+    }
+
     /**
      * Adds a task and shows the confirmation used for all task types.
      *
@@ -15,6 +85,7 @@ public class Edith {
      */
     private static void addTask(ArrayList<Task> tasks, Task task, String line) {
         tasks.add(task);
+        saveTasks(tasks);
         System.out.println("\tGot it. I've added this task:");
         System.out.println("\t  " + task);
         System.out.println("\tNow you have " + tasks.size() + " tasks in the list.");
@@ -34,6 +105,7 @@ public class Edith {
                       + "|_____\\__,_|_|\\__|_| |_|\n";
         String line = "_______________________________________________________________________________";
         ArrayList<Task> tasks = new ArrayList<>();
+        loadTasks(tasks);
 
         System.out.println(line);
         System.out.println(banner);
@@ -68,6 +140,7 @@ public class Edith {
                         int taskIndex = taskNumber - 1;
 
                         tasks.get(taskIndex).markAsDone();
+                        saveTasks(tasks);
 
                         System.out.println("\tNice! I've marked this task as done:");
                         System.out.println("\t  " + tasks.get(taskIndex));
@@ -78,6 +151,7 @@ public class Edith {
                         int taskIndex = taskNumber - 1;
 
                         tasks.get(taskIndex).unmarkAsDone();
+                        saveTasks(tasks);
 
                         System.out.println("\tOK, I've marked this task as not done yet:");
                         System.out.println("\t  " + tasks.get(taskIndex));
@@ -86,6 +160,7 @@ public class Edith {
                     } else if (command.startsWith("delete ")) {
                         int taskNumber = Integer.parseInt(command.substring(7));
                         Task removedTask = tasks.remove(taskNumber - 1);
+                        saveTasks(tasks);
                         
                         System.out.println("\tNoted. I've removed this task:");
                         System.out.println("\t  " + removedTask);

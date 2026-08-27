@@ -9,7 +9,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/n
 
 Run:
 ```sh
-source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && java -cp /private/tmp/edith-ui-test-classes Edith
+source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && rm -f ./data/edith.txt && java -cp /private/tmp/edith-ui-test-classes Edith
 ```
 
 Each case starts a fresh Edith session. The expected output includes the entire

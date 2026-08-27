@@ -16,6 +16,16 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    @Override
+    protected String getTypeCode() {
+        return "D";
+    }
+
+    @Override
+    public String toFileFormat() {
+        return super.toFileFormat() + " | " + by;
+    }
+
     /**
      * Returns this task with its type, status, and deadline.
      *
