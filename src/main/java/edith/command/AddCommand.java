@@ -9,7 +9,13 @@ import edith.task.TaskList;
 public class AddCommand extends Command {
     private final Task task;
     /** Creates an add command for the given task. */
-    public AddCommand(Task task) { this.task = task; }
-    /** Adds the command's task, persists the list, and reports the result. */
-    @Override public void execute(TaskList tasks, Ui ui, Storage storage) { tasks.add(task); storage.save(tasks); ui.showAddedTask(task, tasks.size()); }
+    public AddCommand(Task task) {
+        this.task = task;
+    }
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        tasks.add(task);
+        storage.save(tasks);
+        ui.showAddedTask(task, tasks.size());
+    }
 }

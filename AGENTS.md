@@ -24,6 +24,13 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 # Project-specific requirements
 
+## Java coding standard:
+
+All Java code in this repository must follow the project-specific
+`.codex/skills/seedu-java-coding-standard/SKILL.md`, based on the SE-EDU basic
+and intermediate Java coding standard. Apply it to production code and tests,
+including naming, imports, formatting, braces, line length, and public Javadoc.
+
 ## Java version:
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
@@ -43,6 +50,13 @@ actual and expected output, and only update an expected output when the change
 is intentional and matches the requested behavior.
 
 ## Git
+
+All future commits and branch names must follow
+`.codex/skills/seedu-git-standard/SKILL.md`, based on the SE-EDU Git
+conventions. Commit subjects must be imperative, capitalized, without a final
+period, and preferably 50 characters or fewer (maximum 72). Non-trivial
+commits must include a blank-line-separated body wrapped at 72 characters that
+explains what changed and why. Branch names must use meaningful kebab-case.
 
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
