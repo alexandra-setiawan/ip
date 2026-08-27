@@ -1,5 +1,7 @@
 package edith.task;
 
+import java.util.Locale;
+
 /**
  * Represents a task that Edith can track and mark as complete.
  */
@@ -37,6 +39,17 @@ public class Task {
     /** Marks this task as not yet complete. */
     public void unmarkAsDone() {
         status = TaskStatus.NOT_DONE;
+    }
+
+    /**
+     * Returns whether this task description contains the given keyword,
+     * ignoring letter case.
+     *
+     * @param keyword text to search for
+     * @return true when the description contains the keyword
+     */
+    public boolean matchesDescription(String keyword) {
+        return description.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT));
     }
 
     /**
