@@ -1,3 +1,10 @@
+package duke.command;
+
+import duke.Storage;
+import duke.Ui;
+import duke.task.Task;
+import duke.task.TaskList;
+
 /** Changes a task's completion status. */
 public class MarkCommand extends Command {
     private final int index;

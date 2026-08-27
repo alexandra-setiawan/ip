@@ -4,12 +4,12 @@
 
 Compile:
 ```sh
-source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && javac -d /private/tmp/edith-ui-test-classes src/main/java/*.java
+source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && javac -d /private/tmp/edith-ui-test-classes src/main/java/duke/*.java src/main/java/duke/task/*.java src/main/java/duke/command/*.java
 ```
 
 Run:
 ```sh
-source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && rm -f ./data/edith.txt && java -cp /private/tmp/edith-ui-test-classes Edith
+source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && rm -f ./data/edith.txt && java -cp /private/tmp/edith-ui-test-classes duke.Edith
 ```
 
 Each case starts a fresh Edith session. The expected output includes the entire
