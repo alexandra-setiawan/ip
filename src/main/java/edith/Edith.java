@@ -139,6 +139,22 @@ public class Edith {
 
                         System.out.println(line);
 
+                    } else if (command.startsWith("find ")) {
+                        String keyword = command.substring(5).trim();
+
+                        if (keyword.isEmpty()) {
+                            throw new EdithException("OOPS!!! The keyword cannot be empty.");
+                        }
+
+                        System.out.println("\tHere are the matching tasks in your list:");
+                        for (int i = 0; i < tasks.size(); i++) {
+                            if (tasks.get(i).matchesDescription(keyword)) {
+                                System.out.println("\t" + (i + 1) + "." + tasks.get(i));
+                            }
+                        }
+
+                        System.out.println(line);
+
                     } else if (command.startsWith("mark ")) {
                         int taskNumber = Integer.parseInt(command.substring(5));
                         int taskIndex = taskNumber - 1;

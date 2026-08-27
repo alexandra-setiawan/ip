@@ -66,6 +66,60 @@ _______________________________________________________________________________
 _______________________________________________________________________________
 ```
 
+### Test case: find tasks by keyword
+
+Aim: Verify that find matches keywords case-insensitively, preserves task numbering, and displays an empty result when there are no matches.
+
+Input:
+```text
+todo read book
+deadline return book /by 2019-12-02
+event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000
+find BOOK
+find exercise
+bye
+```
+
+Expected output:
+```text
+_______________________________________________________________________________
+ _____    _ _ _   _     
+| ____|__| (_) |_| |__  
+|  _| / _` | | __| '_ \ 
+| |__| (_| | | |_| | | |
+|_____\__,_|_|\__|_| |_|
+
+	Hello! I'm Edith.
+	What can I do for you?
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [T][ ] read book
+	Now you have 1 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [D][ ] return book (by: Dec 2 2019)
+	Now you have 2 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [E][ ] project meeting (from: Dec 2 2019 6:00pm to: Dec 2 2019 8:00pm)
+	Now you have 3 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the matching tasks in your list:
+	1.[T][ ] read book
+	2.[D][ ] return book (by: Dec 2 2019)
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the matching tasks in your list:
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Bye. Hope to see you again soon!
+_______________________________________________________________________________
+```
+
 ### Test case: mark and unmark a typed task
 
 Aim: Verify that to-do status changes retain the task type and description.
