@@ -38,6 +38,25 @@ public class Task {
     }
 
     /**
+     * Returns a simple representation suitable for saving to disk.
+     *
+     * @return task type, completion status, and description
+     */
+    public String toFileFormat() {
+        return getTypeCode() + " | " + (status == TaskStatus.DONE ? "1" : "0")
+                + " | " + description;
+    }
+
+    /**
+     * Returns the type code used in the save file.
+     *
+     * @return the task type code
+     */
+    protected String getTypeCode() {
+        return "T";
+    }
+
+    /**
      * Returns this task in the format used when displaying a task list.
      *
      * @return the status icon and task description
