@@ -1,16 +1,21 @@
 package edith;
 
-import edith.task.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import edith.task.Deadline;
+import edith.task.Event;
+import edith.task.Task;
+import edith.task.TaskList;
+import edith.task.ToDo;
+
 /** Loads and saves Edith's task list. */
 public class Storage {
     private final String filePath;
+
     /** Creates storage backed by the given file path. */
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -45,7 +50,9 @@ public class Storage {
                 }
                 tasks.add(task);
             }
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+            // An unreadable save file should not prevent Edith from starting.
+        }
         return tasks;
     }
 
@@ -53,12 +60,16 @@ public class Storage {
     public void save(TaskList tasks) {
         File file = new File(filePath);
         File parent = file.getParentFile();
-        if (parent != null) parent.mkdirs();
+        if (parent != null) {
+            parent.mkdirs();
+        }
         try (FileWriter writer = new FileWriter(file)) {
             for (Task task : tasks) {
                 writer.write(task.toFileFormat());
                 writer.write(System.lineSeparator());
             }
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+            // A failed save is ignored to preserve the original program behavior.
+        }
     }
 }

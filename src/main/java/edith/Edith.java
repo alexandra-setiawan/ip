@@ -1,17 +1,17 @@
 package edith;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import edith.task.Deadline;
 import edith.task.Event;
 import edith.task.Task;
 import edith.task.ToDo;
-
-import java.util.ArrayList;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Edith is a chatbot that stores tasks and can mark them as done.
@@ -101,7 +101,7 @@ public class Edith {
 
     /**
      * Starts the chatbot.
-     * 
+     *
      * @param args command line arguments (not used)
      */
     public static void main(String[] args) {
@@ -120,10 +120,10 @@ public class Edith {
         System.out.println("\tWhat can I do for you?");
         System.out.println(line);
 
-        try (Scanner scanner = new Scanner(System.in)) {            
+        try (Scanner scanner = new Scanner(System.in)) {
             while (scanner.hasNextLine()) {
                 String command = scanner.nextLine();
-                
+
                 System.out.println(line);
 
                 try {
@@ -184,32 +184,32 @@ public class Edith {
                         int taskNumber = Integer.parseInt(command.substring(7));
                         Task removedTask = tasks.remove(taskNumber - 1);
                         saveTasks(tasks);
-                        
+
                         System.out.println("\tNoted. I've removed this task:");
                         System.out.println("\t  " + removedTask);
                         System.out.println("\tNow you have " + tasks.size() + " tasks in the list.");
                         System.out.println(line);
-                
+
                     } else if (command.equals("todo") || command.startsWith("todo ")) {
                         String description = command.substring(4).trim();
-                        
+
                         if (description.isEmpty()) {
                             throw new EdithException("OOPS!!! The description of a todo cannot be empty.");
                         }
-                        
+
                         addTask(tasks, new ToDo(description), line);
-                
+
                     } else if (command.startsWith("deadline ")) {
                         String[] deadlineParts = command.substring(9).split(" /by ", 2);
-                        
+
                         addTask(tasks, new Deadline(deadlineParts[0], deadlineParts[1]), line);
-                    
+
                     } else if (command.startsWith("event ")) {
                         String[] eventParts = command.substring(6).split(" /from ", 2);
                         String[] timeParts = eventParts[1].split(" /to ", 2);
-                        
+
                         addTask(tasks, new Event(eventParts[0], timeParts[0], timeParts[1]), line);
-                    
+
                     } else {
                         throw new EdithException("OOPS!!! I'm sorry, but I don't know what that means :-(");
                     }

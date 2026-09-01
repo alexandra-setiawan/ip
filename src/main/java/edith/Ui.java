@@ -1,17 +1,21 @@
 package edith;
 
+import java.util.Scanner;
+
 import edith.task.Task;
 import edith.task.TaskList;
 
-import java.util.Scanner;
-
 /** Handles Edith's console input and output. */
 public class Ui {
-    private static final String LINE = "_______________________________________________________________________________";
+    private static final String LINE =
+            "_______________________________________________________________________________";
     private static final String BANNER = " _____    _ _ _   _     \n"
-            + "| ____|__| (_) |_| |__  \n" + "|  _| / _` | | __| '_ \\ \n"
-            + "| |__| (_| | | |_| | | |\n" + "|_____\\__,_|_|\\__|_| |_|\n";
+            + "| ____|__| (_) |_| |__  \n"
+            + "|  _| / _` | | __| '_ \\ \n"
+            + "| |__| (_| | | |_| | | |\n"
+            + "|_____\\__,_|_|\\__|_| |_|\n";
     private final Scanner scanner = new Scanner(System.in);
+
     /** Shows Edith's welcome message. */
     public void showWelcome() {
         System.out.println(LINE);
