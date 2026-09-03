@@ -18,11 +18,12 @@ public class Ui {
 
     /** Shows Edith's welcome message. */
     public void showWelcome() {
-        System.out.println(LINE);
-        System.out.println(BANNER);
-        System.out.println("\tHello! I'm Edith.");
-        System.out.println("\tWhat can I do for you?");
-        System.out.println(LINE);
+        printLines(
+                LINE,
+                BANNER,
+                "\tHello! I'm Edith.",
+                "\tWhat can I do for you?",
+                LINE);
     }
     /** Reads the next command, or null at end of input. */
     public String readCommand() {
@@ -45,24 +46,39 @@ public class Ui {
     }
     /** Shows the add confirmation. */
     public void showAddedTask(Task task, int count) {
-        System.out.println("\tGot it. I've added this task:\n\t  " + task
-                + "\n\tNow you have " + count + " tasks in the list.");
+        printLines(
+                "\tGot it. I've added this task:",
+                "\t  " + task,
+                "\tNow you have " + count + " tasks in the list.");
     }
     /** Shows a completed-task confirmation. */
     public void showMarked(Task task) {
-        System.out.println("\tNice! I've marked this task as done:\n\t  " + task);
+        printLines(
+                "\tNice! I've marked this task as done:",
+                "\t  " + task);
     }
     /** Shows an uncompleted-task confirmation. */
     public void showUnmarked(Task task) {
-        System.out.println("\tOK, I've marked this task as not done yet:\n\t  " + task);
+        printLines(
+                "\tOK, I've marked this task as not done yet:",
+                "\t  " + task);
     }
     /** Shows the delete confirmation. */
     public void showDeletedTask(Task task, int count) {
-        System.out.println("\tNoted. I've removed this task:\n\t  " + task
-                + "\n\tNow you have " + count + " tasks in the list.");
+        printLines(
+                "\tNoted. I've removed this task:",
+                "\t  " + task,
+                "\tNow you have " + count + " tasks in the list.");
     }
     /** Shows the farewell. */
     public void showBye() {
         System.out.println("\tBye. Hope to see you again soon!");
+    }
+
+    /** Prints each supplied line in the order it was given. */
+    private void printLines(String... lines) {
+        for (String line : lines) {
+            System.out.println(line);
+        }
     }
 }
