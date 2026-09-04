@@ -15,6 +15,17 @@ source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/n
 Each case starts a fresh Edith session. The expected output includes the entire
 session, from Edith's greeting through the `bye` response.
 
+The Gradle application entry point launches the JavaFX GUI; these tests invoke
+the console entry point directly to verify Edith's command behavior.
+
+Manual GUI checks after visual changes:
+
+- The header displays Edith's ASCII banner, profile name, avatar, and status.
+- User commands appear in right-aligned gradient bubbles.
+- Edith's replies appear in left-aligned gray bubbles.
+- Pressing Enter or Send submits a command and scrolls to the newest message.
+- Entering `bye` disables both input controls after Edith replies.
+
 ### Test case: add and list all task types
 
 Aim: Verify that to-dos, deadlines, and events are stored with their type-specific details and displayed in insertion order.

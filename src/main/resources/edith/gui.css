@@ -1,0 +1,102 @@
+.root {
+    -fx-font-family: "Helvetica Neue", "Arial", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.app {
+    -fx-background-color: #ffffff;
+}
+
+.header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #dbdbdb transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-avatar {
+    -fx-alignment: center;
+    -fx-background-color: linear-gradient(to bottom right, #f9ce34, #ee2a7b, #6228d7);
+    -fx-background-radius: 22px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.profile-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #262626;
+}
+
+.profile-status {
+    -fx-font-size: 12px;
+    -fx-text-fill: #737373;
+}
+
+.edith-banner {
+    -fx-font-family: monospace;
+    -fx-font-size: 11px;
+    -fx-text-fill: #737373;
+}
+
+.conversation,
+.conversation > .viewport {
+    -fx-background-color: #ffffff;
+}
+
+.messages {
+    -fx-padding: 18px;
+    -fx-background-color: #ffffff;
+}
+
+.message-row {
+    -fx-padding: 1px 0;
+}
+
+.message-bubble {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 18px;
+    -fx-line-spacing: 2px;
+}
+
+.edith-bubble {
+    -fx-background-color: #efefef;
+    -fx-text-fill: #262626;
+}
+
+.user-bubble {
+    -fx-background-color: linear-gradient(to bottom right, #0095f6, #8a3ab9);
+    -fx-text-fill: white;
+}
+
+.input-bar {
+    -fx-padding: 12px 16px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dbdbdb transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.command-field {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-border-color: #dbdbdb;
+    -fx-border-radius: 20px;
+    -fx-padding: 9px 14px;
+}
+
+.command-field:focused {
+    -fx-border-color: #a8a8a8;
+}
+
+.send-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0095f6;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.send-button:hover {
+    -fx-text-fill: #0064e0;
+}
