@@ -6,14 +6,17 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Locale;
 
 /** Parses and formats the date and time text used by Edith's dated tasks. */
 public final class DateTimeParser {
     private static final DateTimeFormatter DATE_TIME_INPUT = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
     private static final DateTimeFormatter DATE_INPUT = DateTimeFormatter.ofPattern("uuuu-MM-dd")
             .withResolverStyle(ResolverStyle.STRICT);
-    private static final DateTimeFormatter DATE_OUTPUT = DateTimeFormatter.ofPattern("MMM d uuuu");
-    private static final DateTimeFormatter TIME_OUTPUT = DateTimeFormatter.ofPattern("h:mma");
+    private static final DateTimeFormatter DATE_OUTPUT =
+            DateTimeFormatter.ofPattern("MMM d uuuu", Locale.ENGLISH);
+    private static final DateTimeFormatter TIME_OUTPUT =
+            DateTimeFormatter.ofPattern("h:mma", Locale.ENGLISH);
 
     private DateTimeParser() {
         // Utility class; do not instantiate.
@@ -41,6 +44,7 @@ public final class DateTimeParser {
         assert dateTime != null : "Date-time to format must not be null";
         String date = dateTime.format(DATE_OUTPUT);
         return dateTime.toLocalTime().equals(LocalTime.MIDNIGHT)
-                ? date : date + " " + dateTime.format(TIME_OUTPUT);
+                ? date
+                : date + " " + dateTime.format(TIME_OUTPUT).toLowerCase(Locale.ROOT);
     }
 }
