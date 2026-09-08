@@ -143,6 +143,8 @@ public class Main extends Application {
 
         /** Adds a message bubble and scrolls it into view. */
         private void appendBubble(String message, boolean isUser) {
+            assert messages != null && conversation != null
+                    : "Chat controls must be initialized before displaying messages";
             Label bubble = new Label(message);
             bubble.setWrapText(true);
             bubble.setMaxWidth(410);

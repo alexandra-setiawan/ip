@@ -9,6 +9,7 @@ public class TaskList implements Iterable<Task> {
 
     /** Adds a task to the list. */
     public void add(Task task) {
+        assert task != null : "Task list must not contain null tasks";
         tasks.add(task);
     }
 

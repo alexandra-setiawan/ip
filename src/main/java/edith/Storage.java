@@ -18,6 +18,7 @@ public class Storage {
 
     /** Creates storage backed by the given file path. */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.isBlank() : "Storage file path must not be blank";
         this.filePath = filePath;
     }
 

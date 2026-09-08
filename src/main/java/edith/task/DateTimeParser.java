@@ -38,6 +38,7 @@ public final class DateTimeParser {
 
     /** Formats a parsed date-time for display. */
     public static String format(LocalDateTime dateTime) {
+        assert dateTime != null : "Date-time to format must not be null";
         String date = dateTime.format(DATE_OUTPUT);
         return dateTime.toLocalTime().equals(LocalTime.MIDNIGHT)
                 ? date : date + " " + dateTime.format(TIME_OUTPUT);
