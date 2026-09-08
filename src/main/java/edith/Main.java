@@ -177,6 +177,18 @@ public class Main extends Application {
         }
 
         @Override
+        public void showMatchingTasks(TaskList tasks, String keyword) {
+            StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+                if (task.matchesDescription(keyword)) {
+                    response.append("\n").append(i + 1).append(".").append(task);
+                }
+            }
+            appendBubble(response.toString(), false);
+        }
+
+        @Override
         public void showAddedTask(Task task, int count) {
             appendBubble("Got it. I've added this task:\n  " + task
                     + "\nNow you have " + count + " tasks in the list.", false);
