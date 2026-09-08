@@ -39,6 +39,21 @@ public class Ui {
             System.out.println("\t" + (i + 1) + "." + tasks.get(i));
         }
     }
+    /**
+     * Prints tasks with descriptions that contain the keyword.
+     *
+     * @param tasks tasks to search
+     * @param keyword text to match against task descriptions
+     */
+    public void showMatchingTasks(TaskList tasks, String keyword) {
+        System.out.println("\tHere are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            if (task.matchesDescription(keyword)) {
+                System.out.println("\t" + (i + 1) + "." + task);
+            }
+        }
+    }
     /** Prints an error message. */
     public void showError(String message) {
         System.out.println("\t" + message);

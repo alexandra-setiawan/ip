@@ -21,6 +21,13 @@ public class Parser {
         if (command.equals("list")) {
             return new ListCommand();
         }
+        if (command.equals("find") || command.startsWith("find ")) {
+            String keyword = command.substring(4).trim();
+            if (keyword.isEmpty()) {
+                throw new EdithException("OOPS!!! The keyword cannot be empty.");
+            }
+            return new FindCommand(keyword);
+        }
         if (command.startsWith("mark ")) {
             return new MarkCommand(Integer.parseInt(command.substring(5)), true);
         }
