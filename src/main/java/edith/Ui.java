@@ -47,11 +47,8 @@ public class Ui {
      */
     public void showMatchingTasks(TaskList tasks, String keyword) {
         System.out.println("\tHere are the matching tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            if (task.matchesDescription(keyword)) {
-                System.out.println("\t" + (i + 1) + "." + task);
-            }
+        for (int index : tasks.findMatchingIndices(keyword)) {
+            System.out.println("\t" + (index + 1) + "." + tasks.get(index));
         }
     }
     /** Prints an error message. */

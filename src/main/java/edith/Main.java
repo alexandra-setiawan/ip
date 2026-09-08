@@ -179,11 +179,8 @@ public class Main extends Application {
         @Override
         public void showMatchingTasks(TaskList tasks, String keyword) {
             StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                Task task = tasks.get(i);
-                if (task.matchesDescription(keyword)) {
-                    response.append("\n").append(i + 1).append(".").append(task);
-                }
+            for (int index : tasks.findMatchingIndices(keyword)) {
+                response.append("\n").append(index + 1).append(".").append(tasks.get(index));
             }
             appendBubble(response.toString(), false);
         }
