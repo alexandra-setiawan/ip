@@ -1,6 +1,7 @@
 package edith.task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -8,11 +9,25 @@ import java.util.stream.IntStream;
 /** Owns Edith's tasks and the operations on the task collection. */
 public class TaskList implements Iterable<Task> {
     private final ArrayList<Task> tasks = new ArrayList<>();
+    private long nextInsertionOrder;
 
     /** Adds a task to the list. */
     public void add(Task task) {
+        add(task, nextInsertionOrder);
+    }
+
+    /**
+     * Adds a task with a previously saved insertion order.
+     *
+     * @param task task to add
+     * @param insertionOrder permanent order assigned when the task was first added
+     */
+    public void add(Task task, long insertionOrder) {
         assert task != null : "Task list must not contain null tasks";
+        assert insertionOrder >= 0 : "Insertion order must not be negative";
+        task.setInsertionOrder(insertionOrder);
         tasks.add(task);
+        nextInsertionOrder = Math.max(nextInsertionOrder, insertionOrder + 1);
     }
 
     /** Returns a task by zero-based index. */
@@ -23,6 +38,32 @@ public class TaskList implements Iterable<Task> {
     /** Removes and returns a task by zero-based index. */
     public Task remove(int index) {
         return tasks.remove(index);
+    }
+
+    /**
+     * Sorts the tasks in the given order.
+     *
+     * @param sortOrder order in which to arrange the tasks
+     */
+    public void sort(SortOrder sortOrder) {
+        assert sortOrder != null : "Sort order must not be null";
+        Comparator<Task> alphabeticalComparator =
+                Comparator.comparing(Task::getDescription, String.CASE_INSENSITIVE_ORDER);
+        Comparator<Task> comparator = switch (sortOrder) {
+            case ALPHABETICAL -> alphabeticalComparator;
+            case ALPHABETICAL_DESCENDING -> alphabeticalComparator.reversed();
+            case DATE -> Comparator.comparing(
+                    Task::getDateTimeForSorting,
+                    Comparator.nullsLast(Comparator.naturalOrder()));
+            case DATE_DESCENDING -> Comparator.comparing(
+                    Task::getDateTimeForSorting,
+                    Comparator.nullsLast(Comparator.reverseOrder()));
+            case STATUS -> Comparator.comparing(Task::isDone);
+            case ADDED -> Comparator.comparingLong(Task::getInsertionOrder);
+            case ADDED_DESCENDING -> Comparator.comparingLong(Task::getInsertionOrder).reversed();
+        };
+
+        tasks.sort(comparator);
     }
 
     /**

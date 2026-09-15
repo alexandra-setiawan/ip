@@ -1,5 +1,6 @@
 package edith.task;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 /**
@@ -11,6 +12,8 @@ public class Task {
 
     /** The current completion status of this task. */
     protected TaskStatus status;
+
+    private long insertionOrder = -1;
 
     /**
      * Creates a task that is initially not done.
@@ -29,6 +32,36 @@ public class Task {
      */
     public String getStatusIcon() {
         return status.getIcon();
+    }
+
+    /** Returns the task description. */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Returns the task's relevant date for sorting, or null if it has no sortable date.
+     *
+     * @return date used for sorting, or null when no sortable date is available
+     */
+    public LocalDateTime getDateTimeForSorting() {
+        return null;
+    }
+
+    /** Returns whether this task is complete. */
+    public boolean isDone() {
+        return status == TaskStatus.DONE;
+    }
+
+    /** Returns the task's permanent insertion order. */
+    public long getInsertionOrder() {
+        return insertionOrder;
+    }
+
+    /** Assigns the task's permanent insertion order. */
+    void setInsertionOrder(long insertionOrder) {
+        assert insertionOrder >= 0 : "Insertion order must not be negative";
+        this.insertionOrder = insertionOrder;
     }
 
     /** Marks this task as complete. */

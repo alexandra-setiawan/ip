@@ -180,12 +180,13 @@ _______________________________________________________________________________
 
 ### Test case: reject invalid commands
 
-Aim: Verify that Edith reports an empty to-do description and an unknown command without ending the session.
+Aim: Verify that Edith reports invalid task and sort commands without ending the session.
 
 Input:
 ```text
 todo
 blah
+sort newest
 bye
 ```
 
@@ -206,6 +207,9 @@ _______________________________________________________________________________
 _______________________________________________________________________________
 _______________________________________________________________________________
 	OOPS!!! I'm sorry, but I don't know what that means :-(
+_______________________________________________________________________________
+_______________________________________________________________________________
+	OOPS!!! That sort order is not available. Enter help to see the options.
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Bye. Hope to see you again soon!
@@ -269,6 +273,164 @@ _______________________________________________________________________________
 	1.[T][ ] read book
 	2.[D][ ] return book (by: June 6th)
 	3.[T][ ] borrow book
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Bye. Hope to see you again soon!
+_______________________________________________________________________________
+```
+
+### Test case: sort tasks in supported orders
+
+Aim: Verify alphabetical, date, status, and insertion-order sorting in each supported direction.
+
+Input:
+```text
+todo write report
+deadline submit report /by June 6th
+event project meeting /from June 5th 3pm /to 6pm
+todo Buy groceries
+mark 3
+sort alph
+sort alph desc
+sort date
+sort date desc
+sort status
+sort added
+sort added desc
+bye
+```
+
+Expected output:
+```text
+_______________________________________________________________________________
+ _____    _ _ _   _     
+| ____|__| (_) |_| |__  
+|  _| / _` | | __| '_ \ 
+| |__| (_| | | |_| | | |
+|_____\__,_|_|\__|_| |_|
+
+	Hello! I'm Edith.
+	What can I do for you?
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [T][ ] write report
+	Now you have 1 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [D][ ] submit report (by: June 6th)
+	Now you have 2 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [E][ ] project meeting (from: June 5th 3pm to: 6pm)
+	Now you have 3 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [T][ ] Buy groceries
+	Now you have 4 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Nice! I've marked this task as done:
+	  [E][X] project meeting (from: June 5th 3pm to: 6pm)
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[T][ ] Buy groceries
+	2.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+	3.[D][ ] submit report (by: June 6th)
+	4.[T][ ] write report
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[T][ ] write report
+	2.[D][ ] submit report (by: June 6th)
+	3.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+	4.[T][ ] Buy groceries
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+	2.[D][ ] submit report (by: June 6th)
+	3.[T][ ] write report
+	4.[T][ ] Buy groceries
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[D][ ] submit report (by: June 6th)
+	2.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+	3.[T][ ] write report
+	4.[T][ ] Buy groceries
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[D][ ] submit report (by: June 6th)
+	2.[T][ ] write report
+	3.[T][ ] Buy groceries
+	4.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[T][ ] write report
+	2.[D][ ] submit report (by: June 6th)
+	3.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+	4.[T][ ] Buy groceries
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Here are the tasks in your list:
+	1.[T][ ] Buy groceries
+	2.[E][X] project meeting (from: June 5th 3pm to: 6pm)
+	3.[D][ ] submit report (by: June 6th)
+	4.[T][ ] write report
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Bye. Hope to see you again soon!
+_______________________________________________________________________________
+```
+
+### Test case: show command help
+
+Aim: Verify that help displays the syntax of every available command.
+
+Input:
+```text
+help
+bye
+```
+
+Expected output:
+```text
+_______________________________________________________________________________
+ _____    _ _ _   _     
+| ____|__| (_) |_| |__  
+|  _| / _` | | __| '_ \ 
+| |__| (_| | | |_| | | |
+|_____\__,_|_|\__|_| |_|
+
+	Hello! I'm Edith.
+	What can I do for you?
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Available commands:
+	  todo <description>
+	  deadline <description> /by <date>
+	  event <description> /from <start> /to <end>
+	  list
+	  find <keyword>
+	  mark <number>
+	  unmark <number>
+	  delete <number>
+	  sort alph
+	  sort alph desc
+	  sort date
+	  sort date desc
+	  sort status
+	  sort added
+	  sort added desc
+	  help
+	  bye
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Bye. Hope to see you again soon!

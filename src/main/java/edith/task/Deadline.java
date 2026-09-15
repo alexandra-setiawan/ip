@@ -25,6 +25,11 @@ public class Deadline extends Task {
     }
 
     @Override
+    public LocalDateTime getDateTimeForSorting() {
+        return byDateTime == null ? DateTimeParser.parseForSorting(by) : byDateTime;
+    }
+
+    @Override
     protected String getTypeCode() {
         return "D";
     }

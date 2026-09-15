@@ -38,10 +38,13 @@ public class Storage {
                 }
                 Task task;
                 if (parts[0].equals("T")) {
+                    if (parts.length != 3 && parts.length != 4) {
+                        continue;
+                    }
                     task = new ToDo(parts[2]);
-                } else if (parts[0].equals("D") && parts.length == 4) {
+                } else if (parts[0].equals("D") && (parts.length == 4 || parts.length == 5)) {
                     task = new Deadline(parts[2], parts[3]);
-                } else if (parts[0].equals("E") && parts.length == 5) {
+                } else if (parts[0].equals("E") && (parts.length == 5 || parts.length == 6)) {
                     task = new Event(parts[2], parts[3], parts[4]);
                 } else {
                     continue;
@@ -49,7 +52,25 @@ public class Storage {
                 if (parts[1].equals("1")) {
                     task.markAsDone();
                 }
-                tasks.add(task);
+                boolean hasInsertionOrder = parts.length == switch (parts[0]) {
+                    case "T" -> 4;
+                    case "D" -> 5;
+                    case "E" -> 6;
+                    default -> throw new AssertionError("Unsupported task type");
+                };
+                if (hasInsertionOrder) {
+                    try {
+                        long insertionOrder = Long.parseLong(parts[parts.length - 1]);
+                        if (insertionOrder < 0) {
+                            continue;
+                        }
+                        tasks.add(task, insertionOrder);
+                    } catch (NumberFormatException ignored) {
+                        continue;
+                    }
+                } else {
+                    tasks.add(task);
+                }
             }
         } catch (IOException ignored) {
             // An unreadable save file should not prevent Edith from starting.
@@ -66,7 +87,7 @@ public class Storage {
         }
         try (FileWriter writer = new FileWriter(file)) {
             for (Task task : tasks) {
-                writer.write(task.toFileFormat());
+                writer.write(task.toFileFormat() + " | " + task.getInsertionOrder());
                 writer.write(System.lineSeparator());
             }
         } catch (IOException ignored) {

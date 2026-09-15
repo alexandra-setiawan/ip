@@ -3,6 +3,7 @@ package edith.command;
 import edith.EdithException;
 import edith.task.Deadline;
 import edith.task.Event;
+import edith.task.SortOrder;
 import edith.task.ToDo;
 
 /** Converts raw user commands into executable command objects. */
@@ -21,6 +22,9 @@ public class Parser {
         if (command.equals("list")) {
             return new ListCommand();
         }
+        if (command.equals("help")) {
+            return new HelpCommand();
+        }
         if (command.equals("find") || command.startsWith("find ")) {
             String keyword = command.substring(4).trim();
             if (keyword.isEmpty()) {
@@ -36,6 +40,9 @@ public class Parser {
         }
         if (command.startsWith("delete ")) {
             return new DeleteCommand(Integer.parseInt(command.substring(7)));
+        }
+        if (command.equals("sort") || command.startsWith("sort ")) {
+            return parseSortCommand(command.substring(4).trim());
         }
         if (command.equals("todo") || command.startsWith("todo ")) {
             String description = command.substring(4).trim();
@@ -60,5 +67,25 @@ public class Parser {
             }
         }
         throw new EdithException("OOPS!!! I'm sorry, but I don't know what that means :-(");
+    }
+
+    /** Parses one of the supported sort orders. */
+    private static SortCommand parseSortCommand(String arguments) throws EdithException {
+        SortOrder sortOrder = switch (arguments) {
+            case "alph" -> SortOrder.ALPHABETICAL;
+            case "alph desc" -> SortOrder.ALPHABETICAL_DESCENDING;
+            case "date" -> SortOrder.DATE;
+            case "date desc" -> SortOrder.DATE_DESCENDING;
+            case "status" -> SortOrder.STATUS;
+            case "added" -> SortOrder.ADDED;
+            case "added desc" -> SortOrder.ADDED_DESCENDING;
+            default -> throw invalidSortCommand();
+        };
+        return new SortCommand(sortOrder);
+    }
+
+    /** Returns the error used for malformed sort commands. */
+    private static EdithException invalidSortCommand() {
+        return new EdithException("OOPS!!! That sort order is not available. Enter help to see the options.");
     }
 }

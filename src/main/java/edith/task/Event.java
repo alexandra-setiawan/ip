@@ -34,6 +34,11 @@ public class Event extends Task {
     }
 
     @Override
+    public LocalDateTime getDateTimeForSorting() {
+        return fromDateTime == null ? DateTimeParser.parseForSorting(from) : fromDateTime;
+    }
+
+    @Override
     protected String getTypeCode() {
         return "E";
     }

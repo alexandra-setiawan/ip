@@ -14,6 +14,24 @@ public class Ui {
             + "|  _| / _` | | __| '_ \\ \n"
             + "| |__| (_| | | |_| | | |\n"
             + "|_____\\__,_|_|\\__|_| |_|\n";
+    private static final String HELP_TEXT = "Available commands:\n"
+            + "  todo <description>\n"
+            + "  deadline <description> /by <date>\n"
+            + "  event <description> /from <start> /to <end>\n"
+            + "  list\n"
+            + "  find <keyword>\n"
+            + "  mark <number>\n"
+            + "  unmark <number>\n"
+            + "  delete <number>\n"
+            + "  sort alph\n"
+            + "  sort alph desc\n"
+            + "  sort date\n"
+            + "  sort date desc\n"
+            + "  sort status\n"
+            + "  sort added\n"
+            + "  sort added desc\n"
+            + "  help\n"
+            + "  bye";
     private final Scanner scanner = new Scanner(System.in);
 
     /** Shows Edith's welcome message. */
@@ -38,6 +56,15 @@ public class Ui {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println("\t" + (i + 1) + "." + tasks.get(i));
         }
+    }
+    /** Shows the syntax of every available command. */
+    public void showHelp() {
+        System.out.println("\t" + HELP_TEXT.replace("\n", "\n\t"));
+    }
+
+    /** Returns the help text for other user interfaces. */
+    protected String getHelpText() {
+        return HELP_TEXT;
     }
     /**
      * Prints tasks with descriptions that contain the keyword.

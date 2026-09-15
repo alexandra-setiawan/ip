@@ -177,6 +177,11 @@ public class Main extends Application {
         }
 
         @Override
+        public void showHelp() {
+            appendBubble(getHelpText(), false);
+        }
+
+        @Override
         public void showMatchingTasks(TaskList tasks, String keyword) {
             StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
             for (int index : tasks.findMatchingIndices(keyword)) {

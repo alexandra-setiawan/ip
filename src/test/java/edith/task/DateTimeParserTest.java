@@ -38,6 +38,27 @@ class DateTimeParserTest {
     }
 
     @Test
+    void parseForSorting_monthDayWithOrdinal_usesCurrentYear() {
+        LocalDateTime value = DateTimeParser.parseForSorting("June 6th");
+
+        assertEquals(LocalDate.of(LocalDate.now().getYear(), 6, 6).atStartOfDay(), value);
+    }
+
+    @Test
+    void parseForSorting_monthDayAndTimeWithOrdinal_usesCurrentYearAndTime() {
+        LocalDateTime value = DateTimeParser.parseForSorting("June 6th 3pm");
+
+        assertEquals(LocalDateTime.of(LocalDate.now().getYear(), 6, 6, 15, 0), value);
+    }
+
+    @Test
+    void parseForSorting_fullNaturalDateTime_preservesSpecifiedYear() {
+        LocalDateTime value = DateTimeParser.parseForSorting("June 6th 2027 3pm");
+
+        assertEquals(LocalDateTime.of(2027, 6, 6, 15, 0), value);
+    }
+
+    @Test
     void format_midnightOmitsTime() {
         assertEquals("Aug 28 2026", DateTimeParser.format(LocalDateTime.of(2026, 8, 28, 0, 0)));
     }
