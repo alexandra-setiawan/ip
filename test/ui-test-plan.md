@@ -20,9 +20,14 @@ the console entry point directly to verify Edith's command behavior.
 
 Manual GUI checks after visual changes:
 
-- The header displays Edith's ASCII banner, profile name, avatar, and status.
-- User commands appear in right-aligned gradient bubbles.
-- Edith's replies appear in left-aligned gray bubbles.
+- The compact header displays Edith's small app badge, name, and task-assistant status; the opening message
+  displays a fully legible, monospaced Edith ASCII banner and tells the user to send `help` for command syntax.
+- User commands appear in right-aligned indigo bubbles, while Edith's responses are left-aligned white cards
+  identified by an `EDITH` label.
+- Invalid commands appear in a pale-red response card identified by a `COMMAND ERROR` label.
+- The GUI help card groups commands and shows required task fields, including `/by` for deadlines and
+  `/from` and `/to` for events.
+- Resizing the window keeps the input bar visible and expands or contracts message widths with the conversation.
 - Pressing Enter or Send submits a command and scrolls to the newest message.
 - Entering `bye` disables both input controls after Edith replies.
 

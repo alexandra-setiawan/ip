@@ -6,6 +6,7 @@ import edith.task.Task;
 import edith.task.TaskList;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -37,7 +38,8 @@ public class Main extends Application {
     /** Builds the chat window and wires its input controls to Edith. */
     @Override
     public void start(Stage stage) {
-        VBox messages = new VBox(10);
+        VBox messages = new VBox(12);
+        messages.setFillWidth(true);
         messages.getStyleClass().add("messages");
 
         ScrollPane conversation = new ScrollPane(messages);
@@ -55,7 +57,7 @@ public class Main extends Application {
         sendButton.setOnAction(event -> sendCommand());
         sendButton.getStyleClass().add("send-button");
 
-        HBox input = new HBox(10, commandField, sendButton);
+        HBox input = new HBox(8, commandField, sendButton);
         input.setAlignment(Pos.CENTER);
         input.getStyleClass().add("input-bar");
         HBox.setHgrow(commandField, Priority.ALWAYS);
@@ -66,37 +68,35 @@ public class Main extends Application {
         root.setBottom(input);
         root.getStyleClass().add("app");
 
-        Scene scene = new Scene(root, 680, 620);
+        Scene scene = new Scene(root, 700, 620);
         scene.getStylesheets().add(Main.class.getResource("/edith/gui.css").toExternalForm());
 
         ui.showWelcome();
         stage.setTitle("Edith • Direct Messages");
-        stage.setMinWidth(480);
-        stage.setMinHeight(500);
+        stage.setMinWidth(520);
+        stage.setMinHeight(480);
+        stage.setResizable(true);
         stage.setScene(scene);
         stage.show();
         commandField.requestFocus();
     }
 
-    /** Creates the profile header and Edith banner. */
+    /** Creates the compact header for the task assistant. */
     private VBox createHeader() {
         Label avatar = new Label("E");
         avatar.getStyleClass().add("header-avatar");
 
         Label name = new Label("Edith");
         name.getStyleClass().add("profile-name");
-        Label status = new Label("Active now");
+        Label status = new Label("Task assistant");
         status.getStyleClass().add("profile-status");
         VBox identity = new VBox(1, name, status);
 
-        HBox profile = new HBox(10, avatar, identity);
+        HBox profile = new HBox(8, avatar, identity);
         profile.setAlignment(Pos.CENTER_LEFT);
 
-        Label banner = new Label(EDITH_BANNER);
-        banner.getStyleClass().add("edith-banner");
-
-        VBox header = new VBox(10, profile, banner);
-        header.setPadding(new Insets(12, 18, 10, 18));
+        VBox header = new VBox(profile);
+        header.setPadding(new Insets(10, 18, 10, 18));
         header.getStyleClass().add("header");
         return header;
     }
@@ -127,6 +127,31 @@ public class Main extends Application {
 
     /** Adapts Edith's output methods from the console to direct-message bubbles. */
     private static class ChatUi extends Ui {
+        private static final double BUBBLE_WIDTH_OFFSET = 120;
+        private static final double MINIMUM_BUBBLE_WIDTH = 250;
+        private static final double MAXIMUM_BUBBLE_WIDTH = 620;
+        private static final String WELCOME_MESSAGE = "Hello! I'm Edith. 👋\n"
+                + "Send \"help\" to see the list of commands.";
+        private static final String GUI_HELP_TEXT = "How to use Edith\n\n"
+                + "ADD TASKS\n"
+                + "  todo <description>\n"
+                + "  deadline <description> /by <date>\n"
+                + "  event <description> /from <start> /to <end>\n\n"
+                + "MANAGE TASKS\n"
+                + "  list\n"
+                + "  find <keyword>\n"
+                + "  mark <number>\n"
+                + "  unmark <number>\n"
+                + "  delete <number>\n\n"
+                + "SORT TASKS\n"
+                + "  sort alph [desc]\n"
+                + "  sort date [desc]\n"
+                + "  sort status\n"
+                + "  sort added [desc]\n\n"
+                + "OTHER\n"
+                + "  help\n"
+                + "  bye";
+
         private VBox messages;
         private ScrollPane conversation;
 
@@ -143,15 +168,62 @@ public class Main extends Application {
 
         /** Adds a message bubble and scrolls it into view. */
         private void appendBubble(String message, boolean isUser) {
+            appendBubble(message, isUser, false);
+        }
+
+        /** Adds a message bubble with optional error styling and scrolls it into view. */
+        private void appendBubble(String message, boolean isUser, boolean isError) {
             assert messages != null && conversation != null
                     : "Chat controls must be initialized before displaying messages";
             Label bubble = new Label(message);
             bubble.setWrapText(true);
-            bubble.setMaxWidth(410);
+            bubble.maxWidthProperty().bind(Bindings.createDoubleBinding(
+                    this::calculateMessageMaxWidth, conversation.widthProperty()));
             bubble.getStyleClass().addAll("message-bubble", isUser ? "user-bubble" : "edith-bubble");
+            if (isError) {
+                bubble.getStyleClass().add("error-bubble");
+            }
 
-            HBox row = new HBox(bubble);
+            HBox row;
+            if (isUser) {
+                row = new HBox(bubble);
+            } else {
+                Label sender = new Label(isError ? "COMMAND ERROR" : "EDITH");
+                sender.getStyleClass().add(isError ? "error-label" : "sender-label");
+                VBox response = new VBox(4, sender, bubble);
+                row = new HBox(response);
+            }
             row.setAlignment(isUser ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
+            row.getStyleClass().add("message-row");
+            messages.getChildren().add(row);
+            Platform.runLater(() -> conversation.setVvalue(1.0));
+        }
+
+        /** Returns a readable bubble width for the current conversation size. */
+        private double calculateMessageMaxWidth() {
+            return Math.max(MINIMUM_BUBBLE_WIDTH,
+                    Math.min(conversation.getWidth() - BUBBLE_WIDTH_OFFSET, MAXIMUM_BUBBLE_WIDTH));
+        }
+
+        /** Adds the welcome message, including Edith's banner, to the conversation. */
+        private void appendWelcomeMessage() {
+            assert messages != null && conversation != null
+                    : "Chat controls must be initialized before displaying messages";
+            Label sender = new Label("EDITH");
+            sender.getStyleClass().add("sender-label");
+
+            Label banner = new Label(EDITH_BANNER);
+            banner.getStyleClass().add("welcome-banner");
+
+            Label welcome = new Label(WELCOME_MESSAGE);
+            welcome.setWrapText(true);
+            welcome.maxWidthProperty().bind(Bindings.createDoubleBinding(
+                    this::calculateMessageMaxWidth, conversation.widthProperty()));
+            welcome.getStyleClass().addAll("message-bubble", "edith-bubble");
+
+            VBox response = new VBox(4, sender, banner, welcome);
+            HBox row = new HBox(response);
+            row.setAlignment(Pos.CENTER_LEFT);
             row.getStyleClass().add("message-row");
             messages.getChildren().add(row);
             Platform.runLater(() -> conversation.setVvalue(1.0));
@@ -159,12 +231,12 @@ public class Main extends Application {
 
         @Override
         public void showWelcome() {
-            appendBubble("Hello! I'm Edith. 👋\nWhat can I do for you?", false);
+            appendWelcomeMessage();
         }
 
         @Override
         public void showError(String message) {
-            appendBubble(message, false);
+            appendBubble(message, false, true);
         }
 
         @Override
@@ -178,7 +250,7 @@ public class Main extends Application {
 
         @Override
         public void showHelp() {
-            appendBubble(getHelpText(), false);
+            appendBubble(GUI_HELP_TEXT, false);
         }
 
         @Override

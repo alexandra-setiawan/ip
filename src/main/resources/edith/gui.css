@@ -4,23 +4,25 @@
 }
 
 .app {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #f6f7fb;
 }
 
 .header {
     -fx-background-color: #ffffff;
-    -fx-border-color: transparent transparent #dbdbdb transparent;
+    -fx-border-color: transparent transparent #e4e7ec transparent;
     -fx-border-width: 0 0 1 0;
 }
 
 .header-avatar {
     -fx-alignment: center;
-    -fx-background-color: linear-gradient(to bottom right, #f9ce34, #ee2a7b, #6228d7);
-    -fx-background-radius: 22px;
-    -fx-min-width: 44px;
-    -fx-min-height: 44px;
+    -fx-background-color: #4f46e5;
+    -fx-background-radius: 14px;
+    -fx-min-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-width: 28px;
+    -fx-max-height: 28px;
     -fx-text-fill: white;
-    -fx-font-size: 20px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
@@ -32,71 +34,101 @@
 
 .profile-status {
     -fx-font-size: 12px;
-    -fx-text-fill: #737373;
-}
-
-.edith-banner {
-    -fx-font-family: monospace;
-    -fx-font-size: 11px;
-    -fx-text-fill: #737373;
+    -fx-text-fill: #667085;
 }
 
 .conversation,
 .conversation > .viewport {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #f6f7fb;
 }
 
 .messages {
-    -fx-padding: 18px;
-    -fx-background-color: #ffffff;
+    -fx-padding: 16px 18px 20px 18px;
+    -fx-background-color: #f6f7fb;
 }
 
 .message-row {
-    -fx-padding: 1px 0;
+    -fx-padding: 2px 0;
 }
 
 .message-bubble {
-    -fx-padding: 10px 14px;
-    -fx-background-radius: 18px;
-    -fx-line-spacing: 2px;
+    -fx-padding: 9px 12px;
+    -fx-background-radius: 12px;
+    -fx-line-spacing: 1px;
 }
 
 .edith-bubble {
-    -fx-background-color: #efefef;
-    -fx-text-fill: #262626;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e4e7ec;
+    -fx-border-radius: 12px;
+    -fx-text-fill: #344054;
 }
 
 .user-bubble {
-    -fx-background-color: linear-gradient(to bottom right, #0095f6, #8a3ab9);
+    -fx-background-color: #4f46e5;
     -fx-text-fill: white;
 }
 
+.sender-label,
+.error-label {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 0.8px;
+}
+
+.sender-label {
+    -fx-text-fill: #667085;
+}
+
+.welcome-banner {
+    -fx-background-color: #eef2ff;
+    -fx-background-radius: 12px;
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 14px;
+    -fx-text-fill: #312e81;
+}
+
+.error-label {
+    -fx-text-fill: #b42318;
+}
+
+.error-bubble {
+    -fx-background-color: #fef3f2;
+    -fx-border-color: #fecdca;
+    -fx-border-radius: 12px;
+    -fx-text-fill: #912018;
+}
+
 .input-bar {
-    -fx-padding: 12px 16px;
+    -fx-padding: 12px 18px;
     -fx-background-color: #ffffff;
-    -fx-border-color: #dbdbdb transparent transparent transparent;
+    -fx-border-color: #e4e7ec transparent transparent transparent;
     -fx-border-width: 1px 0 0 0;
 }
 
 .command-field {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 20px;
-    -fx-border-color: #dbdbdb;
-    -fx-border-radius: 20px;
-    -fx-padding: 9px 14px;
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 8px;
+    -fx-border-color: #d0d5dd;
+    -fx-border-radius: 8px;
+    -fx-padding: 9px 12px;
 }
 
 .command-field:focused {
-    -fx-border-color: #a8a8a8;
+    -fx-border-color: #4f46e5;
 }
 
 .send-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #0095f6;
+    -fx-background-color: #4f46e5;
+    -fx-background-radius: 8px;
+    -fx-padding: 9px 14px;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
 .send-button:hover {
-    -fx-text-fill: #0064e0;
+    -fx-background-color: #4338ca;
 }
