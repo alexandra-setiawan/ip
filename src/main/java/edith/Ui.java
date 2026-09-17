@@ -34,12 +34,12 @@ public class Ui {
             + "  bye";
     private final Scanner scanner = new Scanner(System.in);
 
-    /** Shows Edith's welcome message. */
+    /** Shows Edith's tactical-assistant welcome message. */
     public void showWelcome() {
         System.out.println(LINE);
         System.out.println(BANNER);
-        System.out.println("\tHello! I'm Edith.");
-        System.out.println("\tWhat can I do for you?");
+        System.out.println("\tEDITH online. I'll keep the chaos organised.");
+        System.out.println("\tWhat are we pretending is urgent today?");
         System.out.println(LINE);
     }
     /** Reads the next command, or null at end of input. */
@@ -52,14 +52,14 @@ public class Ui {
     }
     /** Prints the task list. */
     public void showList(TaskList tasks) {
-        System.out.println("\tHere are the tasks in your list:");
+        System.out.println("\tYour task situation. Do try to keep up:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println("\t" + (i + 1) + "." + tasks.get(i));
         }
     }
     /** Shows the syntax of every available command. */
     public void showHelp() {
-        System.out.println("\t" + HELP_TEXT.replace("\n", "\n\t"));
+        System.out.println("\tSince you asked, here is the briefing:\n\t" + HELP_TEXT.replace("\n", "\n\t"));
     }
 
     /** Returns the help text for other user interfaces. */
@@ -73,35 +73,35 @@ public class Ui {
      * @param keyword text to match against task descriptions
      */
     public void showMatchingTasks(TaskList tasks, String keyword) {
-        System.out.println("\tHere are the matching tasks in your list:");
+        System.out.println("\tSearch complete. These survived the filter:");
         for (int index : tasks.findMatchingIndices(keyword)) {
             System.out.println("\t" + (index + 1) + "." + tasks.get(index));
         }
     }
     /** Prints an error message. */
     public void showError(String message) {
-        System.out.println("\t" + message);
+        System.out.println("\tA minor complication:\n\t" + message);
     }
     /** Shows the add confirmation. */
     public void showAddedTask(Task task, int count) {
-        System.out.println("\tGot it. I've added this task:\n\t  " + task
-                + "\n\tNow you have " + count + " tasks in the list.");
+        System.out.println("\tLogged. Organisation suits you:\n\t  " + task
+                + "\n\tActive tasks: " + count + ".");
     }
     /** Shows a completed-task confirmation. */
     public void showMarked(Task task) {
-        System.out.println("\tNice! I've marked this task as done:\n\t  " + task);
+        System.out.println("\tMarked complete. Miracles do happen:\n\t  " + task);
     }
     /** Shows an uncompleted-task confirmation. */
     public void showUnmarked(Task task) {
-        System.out.println("\tOK, I've marked this task as not done yet:\n\t  " + task);
+        System.out.println("\tMarked incomplete. Back to the grind:\n\t  " + task);
     }
     /** Shows the delete confirmation. */
     public void showDeletedTask(Task task, int count) {
-        System.out.println("\tNoted. I've removed this task:\n\t  " + task
-                + "\n\tNow you have " + count + " tasks in the list.");
+        System.out.println("\tRemoved. One less thing to avoid:\n\t  " + task
+                + "\n\tActive tasks: " + count + ".");
     }
     /** Shows the farewell. */
     public void showBye() {
-        System.out.println("\tBye. Hope to see you again soon!");
+        System.out.println("\tEDITH signing off. Try not to create chaos without me.");
     }
 }

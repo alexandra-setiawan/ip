@@ -9,7 +9,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/n
 
 Run:
 ```sh
-source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && rm -f ./data/edith.txt && java -cp /private/tmp/edith-ui-test-classes edith.Edith
+source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu >/dev/null && rm -f /private/tmp/edith-ui-test-data.txt && java -Dedith.taskFile=/private/tmp/edith-ui-test-data.txt -cp /private/tmp/edith-ui-test-classes edith.Edith
 ```
 
 Each case starts a fresh Edith session. The expected output includes the entire
@@ -20,16 +20,24 @@ the console entry point directly to verify Edith's command behavior.
 
 Manual GUI checks after visual changes:
 
-- The compact header displays Edith's small app badge, name, and task-assistant status; the opening message
-  displays a fully legible, monospaced Edith ASCII banner and tells the user to send `help` for command syntax.
-- User commands appear in right-aligned indigo bubbles, while Edith's responses are left-aligned white cards
-  identified by an `EDITH` label.
-- Invalid commands appear in a pale-red response card identified by a `COMMAND ERROR` label.
+- The title bar uses the mock-up's #2d67c8-to-#1e488f blue gradient and displays the cropped logo from
+  `build/resources/images/logo.jpg` as a circle in both the operating system and app title bars, followed by
+  the E.D.I.T.H. name, subtitle, and green Online indicator.
+- The opening message addresses Peter and tells the user to send `help` for command syntax; no separate
+  assistant bar or navigation sidebar is present.
+- User commands appear in right-aligned deep-blue bubbles, while Edith's responses are left-aligned slate
+  bubbles with the circular cropped logo beside them. Both bubble styles use the mock-up's asymmetric pointed
+  corner.
+- The conversation, bubbles, input area, and scrollbar use the mock-up's dark-navy scheme rather than light
+  surfaces.
+- Invalid commands appear in a pale-red response bubble identified by a `COMMAND ERROR` label.
 - The GUI help card groups commands and shows required task fields, including `/by` for deadlines and
   `/from` and `/to` for events.
+- The command field and guide preserve parser syntax, including `deadline <description> /by <date>`.
 - Resizing the window keeps the input bar visible and expands or contracts message widths with the conversation.
-- Pressing Enter or Send submits a command and scrolls to the newest message.
-- Entering `bye` disables both input controls after Edith replies.
+- Pressing Enter or Send submits a command and scrolls to the newest message without manual scrolling.
+- Entering `bye` changes the title-bar indicator to red Offline and disables both input controls after Edith
+  replies.
 
 ### Test case: add and list all task types
 
@@ -53,32 +61,32 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] borrow book
-	Now you have 1 tasks in the list.
+	Active tasks: 1.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [D][ ] return book (by: Dec 2 2019)
-	Now you have 2 tasks in the list.
+	Active tasks: 2.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [E][ ] project meeting (from: Dec 2 2019 6:00pm to: Dec 2 2019 8:00pm)
-	Now you have 3 tasks in the list.
+	Active tasks: 3.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] borrow book
 	2.[D][ ] return book (by: Dec 2 2019)
 	3.[E][ ] project meeting (from: Dec 2 2019 6:00pm to: Dec 2 2019 8:00pm)
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```
 
@@ -105,34 +113,34 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] read book
-	Now you have 1 tasks in the list.
+	Active tasks: 1.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [D][ ] return book (by: Dec 2 2019)
-	Now you have 2 tasks in the list.
+	Active tasks: 2.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [E][ ] project meeting (from: Dec 2 2019 6:00pm to: Dec 2 2019 8:00pm)
-	Now you have 3 tasks in the list.
+	Active tasks: 3.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the matching tasks in your list:
+	Search complete. These survived the filter:
 	1.[T][ ] read book
 	2.[D][ ] return book (by: Dec 2 2019)
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the matching tasks in your list:
+	Search complete. These survived the filter:
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```
 
@@ -158,28 +166,28 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] read book
-	Now you have 1 tasks in the list.
+	Active tasks: 1.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Nice! I've marked this task as done:
+	Marked complete. Miracles do happen:
 	  [T][X] read book
 _______________________________________________________________________________
 _______________________________________________________________________________
-	OK, I've marked this task as not done yet:
+	Marked incomplete. Back to the grind:
 	  [T][ ] read book
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] read book
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```
 
@@ -211,40 +219,48 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! Commands must not begin or end with spaces.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! Use exactly one space between command parts.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! Invalid deadline command. Enter help to see its format.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! Please enter a valid deadline.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! An event's end date/time must be after its start date/time.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! The mark command needs a positive task number.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] buy milk
-	Now you have 1 tasks in the list.
+	Active tasks: 1.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! An identical task is already in your list.
 _______________________________________________________________________________
 _______________________________________________________________________________
+	A minor complication:
 	OOPS!!! That task number does not exist.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```
 
@@ -272,42 +288,42 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] read book
-	Now you have 1 tasks in the list.
+	Active tasks: 1.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [D][ ] return book (by: June 6th)
-	Now you have 2 tasks in the list.
+	Active tasks: 2.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
-	Now you have 3 tasks in the list.
+	Active tasks: 3.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] borrow book
-	Now you have 4 tasks in the list.
+	Active tasks: 4.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Noted. I've removed this task:
+	Removed. One less thing to avoid:
 	  [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
-	Now you have 3 tasks in the list.
+	Active tasks: 3.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] read book
 	2.[D][ ] return book (by: June 6th)
 	3.[T][ ] borrow book
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```
 
@@ -341,84 +357,84 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] write report
-	Now you have 1 tasks in the list.
+	Active tasks: 1.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [D][ ] submit report (by: June 6th)
-	Now you have 2 tasks in the list.
+	Active tasks: 2.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [E][ ] project meeting (from: June 5th 3pm to: 6pm)
-	Now you have 3 tasks in the list.
+	Active tasks: 3.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Got it. I've added this task:
+	Logged. Organisation suits you:
 	  [T][ ] Buy groceries
-	Now you have 4 tasks in the list.
+	Active tasks: 4.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Nice! I've marked this task as done:
+	Marked complete. Miracles do happen:
 	  [E][X] project meeting (from: June 5th 3pm to: 6pm)
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] Buy groceries
 	2.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 	3.[D][ ] submit report (by: June 6th)
 	4.[T][ ] write report
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] write report
 	2.[D][ ] submit report (by: June 6th)
 	3.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 	4.[T][ ] Buy groceries
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 	2.[D][ ] submit report (by: June 6th)
 	3.[T][ ] write report
 	4.[T][ ] Buy groceries
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[D][ ] submit report (by: June 6th)
 	2.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 	3.[T][ ] write report
 	4.[T][ ] Buy groceries
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[D][ ] submit report (by: June 6th)
 	2.[T][ ] write report
 	3.[T][ ] Buy groceries
 	4.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] write report
 	2.[D][ ] submit report (by: June 6th)
 	3.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 	4.[T][ ] Buy groceries
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Here are the tasks in your list:
+	Your task situation. Do try to keep up:
 	1.[T][ ] Buy groceries
 	2.[E][X] project meeting (from: June 5th 3pm to: 6pm)
 	3.[D][ ] submit report (by: June 6th)
 	4.[T][ ] write report
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```
 
@@ -441,10 +457,11 @@ _______________________________________________________________________________
 | |__| (_| | | |_| | | |
 |_____\__,_|_|\__|_| |_|
 
-	Hello! I'm Edith.
-	What can I do for you?
+	EDITH online. I'll keep the chaos organised.
+	What are we pretending is urgent today?
 _______________________________________________________________________________
 _______________________________________________________________________________
+	Since you asked, here is the briefing:
 	Available commands:
 	  todo <description>
 	  deadline <description> /by <date>
@@ -465,6 +482,6 @@ _______________________________________________________________________________
 	  bye
 _______________________________________________________________________________
 _______________________________________________________________________________
-	Bye. Hope to see you again soon!
+	EDITH signing off. Try not to create chaos without me.
 _______________________________________________________________________________
 ```

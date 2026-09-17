@@ -6,7 +6,7 @@ import edith.task.TaskList;
 
 /** Runs Edith through the console interface. */
 public class Edith {
-    private static final String TASK_FILE = "./data/edith.txt";
+    private static final String TASK_FILE = System.getProperty("edith.taskFile", "./data/edith.txt");
 
     /**
      * Starts the console chatbot.

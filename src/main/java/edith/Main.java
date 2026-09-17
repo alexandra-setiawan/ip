@@ -1,5 +1,7 @@
 package edith;
 
+import java.nio.file.Path;
+
 import edith.command.Command;
 import edith.command.Parser;
 import edith.task.Task;
@@ -9,31 +11,39 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 /** Provides a graphical direct-message interface for interacting with Edith. */
 public class Main extends Application {
     private static final String TASK_FILE = "./data/edith.txt";
-    private static final String EDITH_BANNER = " _____    _ _ _   _     \n"
-            + "| ____|__| (_) |_| |__  \n"
-            + "|  _| / _` | | __| '_ \\ \n"
-            + "| |__| (_| | | |_| | | |\n"
-            + "|_____\\__,_|_|\\__|_| |_|";
+    private static final String LOGO_PATH = "build/resources/images/logo.jpg";
+    private static final Rectangle2D LOGO_VIEWPORT = new Rectangle2D(145, 800, 1400, 1400);
+    private static final double HEADER_LOGO_SIZE = 32;
+    private static final double MESSAGE_LOGO_SIZE = 28;
 
     private final Storage storage = new Storage(TASK_FILE);
     private TaskList tasks;
-    private final ChatUi ui = new ChatUi();
+    private final Image logoImage = new Image(Path.of(LOGO_PATH).toUri().toString());
+    private final ChatUi ui = new ChatUi(logoImage);
     private TextField commandField;
     private Button sendButton;
+    private Label connectionIndicator;
+    private Label connectionStatus;
 
     /** Builds the chat window and wires its input controls to Edith. */
     @Override
@@ -49,7 +59,7 @@ public class Main extends Application {
         ui.setConversation(messages, conversation);
 
         commandField = new TextField();
-        commandField.setPromptText("Message Edith...");
+        commandField.setPromptText("Enter a command, e.g. deadline submit report /by Friday 5pm");
         commandField.setOnAction(event -> sendCommand());
         commandField.getStyleClass().add("command-field");
 
@@ -62,10 +72,16 @@ public class Main extends Application {
         input.getStyleClass().add("input-bar");
         HBox.setHgrow(commandField, Priority.ALWAYS);
 
+        Label commandGuide = new Label("Examples: todo <description>  ·  deadline <description> /by <date>  ·  bye");
+        commandGuide.getStyleClass().add("command-guide");
+
+        VBox inputArea = new VBox(input, commandGuide);
+        inputArea.getStyleClass().add("input-area");
+
         BorderPane root = new BorderPane();
-        root.setTop(createHeader());
+        root.setTop(createTitleBar());
         root.setCenter(conversation);
-        root.setBottom(input);
+        root.setBottom(inputArea);
         root.getStyleClass().add("app");
 
         Scene scene = new Scene(root, 700, 620);
@@ -78,8 +94,10 @@ public class Main extends Application {
             ui.showError(error.getMessage());
             commandField.setDisable(true);
             sendButton.setDisable(true);
+            showOfflineStatus();
         }
-        stage.setTitle("Edith • Direct Messages");
+        stage.setTitle("E.D.I.T.H.");
+        stage.getIcons().add(createCircularLogo(logoImage, 64));
         stage.setMinWidth(520);
         stage.setMinHeight(480);
         stage.setResizable(true);
@@ -88,24 +106,70 @@ public class Main extends Application {
         commandField.requestFocus();
     }
 
-    /** Creates the compact header for the task assistant. */
-    private VBox createHeader() {
-        Label avatar = new Label("E");
-        avatar.getStyleClass().add("header-avatar");
+    /** Creates the title bar that displays Edith's identity and connection state. */
+    private HBox createTitleBar() {
+        ImageView logo = createLogoView(logoImage, HEADER_LOGO_SIZE);
+        logo.getStyleClass().add("header-logo");
 
-        Label name = new Label("Edith");
+        Label name = new Label("E.D.I.T.H.");
         name.getStyleClass().add("profile-name");
-        Label status = new Label("Task assistant");
-        status.getStyleClass().add("profile-status");
-        VBox identity = new VBox(1, name, status);
+        Label subtitle = new Label("Even Dead, I'm The Helper");
+        subtitle.getStyleClass().add("profile-status");
+        VBox identity = new VBox(1, name, subtitle);
 
-        HBox profile = new HBox(8, avatar, identity);
+        HBox profile = new HBox(8, logo, identity);
         profile.setAlignment(Pos.CENTER_LEFT);
 
-        VBox header = new VBox(profile);
+        connectionIndicator = new Label("●");
+        connectionIndicator.getStyleClass().add("status-indicator");
+        connectionStatus = new Label("Online");
+        connectionStatus.getStyleClass().add("connection-status");
+        HBox connection = new HBox(6, connectionIndicator, connectionStatus);
+        connection.setAlignment(Pos.CENTER_RIGHT);
+        connection.getStyleClass().add("connection-state");
+
+        HBox header = new HBox(profile, connection);
+        header.setAlignment(Pos.CENTER_LEFT);
         header.setPadding(new Insets(10, 18, 10, 18));
         header.getStyleClass().add("header");
+        HBox.setHgrow(profile, Priority.ALWAYS);
         return header;
+    }
+
+    /** Updates the title-bar indicator after Edith has ended the session. */
+    private void showOfflineStatus() {
+        connectionIndicator.getStyleClass().add("offline-indicator");
+        connectionStatus.getStyleClass().add("offline-status");
+        connectionStatus.setText("Offline");
+    }
+
+    /** Creates a cropped, square view of the supplied EDITH logo. */
+    private static ImageView createLogoView(Image image, double size) {
+        ImageView logo = new ImageView(image);
+        logo.setViewport(LOGO_VIEWPORT);
+        logo.setFitWidth(size);
+        logo.setFitHeight(size);
+        logo.setPreserveRatio(true);
+        logo.setSmooth(true);
+        logo.setClip(new Circle(size / 2, size / 2, size / 2));
+        return logo;
+    }
+
+    /** Creates a transparent circular image for the operating system title bar. */
+    private static Image createCircularLogo(Image image, int size) {
+        Canvas canvas = new Canvas(size, size);
+        GraphicsContext graphics = canvas.getGraphicsContext2D();
+        double radius = size / 2.0;
+
+        graphics.save();
+        graphics.beginPath();
+        graphics.arc(radius, radius, radius, radius, 0, 360);
+        graphics.closePath();
+        graphics.clip();
+        graphics.drawImage(image, LOGO_VIEWPORT.getMinX(), LOGO_VIEWPORT.getMinY(), LOGO_VIEWPORT.getWidth(),
+                LOGO_VIEWPORT.getHeight(), 0, 0, size, size);
+        graphics.restore();
+        return canvas.snapshot(null, null);
     }
 
     /** Sends the current command to Edith and displays its response. */
@@ -124,6 +188,7 @@ public class Main extends Application {
             if (command.isExit()) {
                 commandField.setDisable(true);
                 sendButton.setDisable(true);
+                showOfflineStatus();
             }
         } catch (EdithException error) {
             ui.showError(error.getMessage());
@@ -135,9 +200,9 @@ public class Main extends Application {
         private static final double BUBBLE_WIDTH_OFFSET = 120;
         private static final double MINIMUM_BUBBLE_WIDTH = 250;
         private static final double MAXIMUM_BUBBLE_WIDTH = 620;
-        private static final String WELCOME_MESSAGE = "Hello! I'm Edith. 👋\n"
-                + "Send \"help\" to see the list of commands.";
-        private static final String GUI_HELP_TEXT = "How to use Edith\n\n"
+        private static final String WELCOME_MESSAGE = "Good evening, Peter. I have your schedule under surveillance.\n"
+                + "Type \"help\" if you require the briefing.";
+        private static final String GUI_HELP_TEXT = "The briefing, since we are doing this properly:\n\n"
                 + "ADD TASKS\n"
                 + "  todo <description>\n"
                 + "  deadline <description> /by <date>\n"
@@ -159,6 +224,12 @@ public class Main extends Application {
 
         private VBox messages;
         private ScrollPane conversation;
+        private final Image logoImage;
+
+        /** Creates a chat adapter that displays the supplied EDITH logo. */
+        ChatUi(Image logoImage) {
+            this.logoImage = logoImage;
+        }
 
         /** Sets the controls used for the chat transcript. */
         void setConversation(VBox messages, ScrollPane conversation) {
@@ -192,16 +263,36 @@ public class Main extends Application {
             HBox row;
             if (isUser) {
                 row = new HBox(bubble);
-            } else {
-                Label sender = new Label(isError ? "COMMAND ERROR" : "EDITH");
-                sender.getStyleClass().add(isError ? "error-label" : "sender-label");
+            } else if (isError) {
+                Label sender = new Label("COMMAND ERROR");
+                sender.getStyleClass().add("error-label");
                 VBox response = new VBox(4, sender, bubble);
-                row = new HBox(response);
+                row = new HBox(8, createAssistantAvatar(), response);
+            } else {
+                row = new HBox(8, createAssistantAvatar(), bubble);
             }
             row.setAlignment(isUser ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
             row.getStyleClass().add("message-row");
             messages.getChildren().add(row);
-            Platform.runLater(() -> conversation.setVvalue(1.0));
+            scrollToLatestMessage();
+        }
+
+        /** Creates the circular assistant marker used beside Edith's messages. */
+        private ImageView createAssistantAvatar() {
+            ImageView logo = createLogoView(logoImage, MESSAGE_LOGO_SIZE);
+            logo.getStyleClass().add("message-logo");
+            return logo;
+        }
+
+        /** Scrolls to the latest message after JavaFX measures the new message bubble. */
+        private void scrollToLatestMessage() {
+            Platform.runLater(() -> {
+                messages.applyCss();
+                messages.layout();
+                conversation.applyCss();
+                conversation.layout();
+                conversation.setVvalue(conversation.getVmax());
+            });
         }
 
         /** Returns a readable bubble width for the current conversation size. */
@@ -210,28 +301,9 @@ public class Main extends Application {
                     Math.min(conversation.getWidth() - BUBBLE_WIDTH_OFFSET, MAXIMUM_BUBBLE_WIDTH));
         }
 
-        /** Adds the welcome message, including Edith's banner, to the conversation. */
+        /** Adds Edith's opening message to the conversation. */
         private void appendWelcomeMessage() {
-            assert messages != null && conversation != null
-                    : "Chat controls must be initialized before displaying messages";
-            Label sender = new Label("EDITH");
-            sender.getStyleClass().add("sender-label");
-
-            Label banner = new Label(EDITH_BANNER);
-            banner.getStyleClass().add("welcome-banner");
-
-            Label welcome = new Label(WELCOME_MESSAGE);
-            welcome.setWrapText(true);
-            welcome.maxWidthProperty().bind(Bindings.createDoubleBinding(
-                    this::calculateMessageMaxWidth, conversation.widthProperty()));
-            welcome.getStyleClass().addAll("message-bubble", "edith-bubble");
-
-            VBox response = new VBox(4, sender, banner, welcome);
-            HBox row = new HBox(response);
-            row.setAlignment(Pos.CENTER_LEFT);
-            row.getStyleClass().add("message-row");
-            messages.getChildren().add(row);
-            Platform.runLater(() -> conversation.setVvalue(1.0));
+            appendBubble(WELCOME_MESSAGE, false);
         }
 
         @Override
@@ -241,12 +313,12 @@ public class Main extends Application {
 
         @Override
         public void showError(String message) {
-            appendBubble(message, false, true);
+            appendBubble("A minor complication:\n" + message, false, true);
         }
 
         @Override
         public void showList(TaskList tasks) {
-            StringBuilder response = new StringBuilder("Here are the tasks in your list:");
+            StringBuilder response = new StringBuilder("Your task situation. Do try to keep up:");
             for (int i = 0; i < tasks.size(); i++) {
                 response.append("\n").append(i + 1).append(".").append(tasks.get(i));
             }
@@ -260,7 +332,7 @@ public class Main extends Application {
 
         @Override
         public void showMatchingTasks(TaskList tasks, String keyword) {
-            StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
+            StringBuilder response = new StringBuilder("Search complete. These survived the filter:");
             for (int index : tasks.findMatchingIndices(keyword)) {
                 response.append("\n").append(index + 1).append(".").append(tasks.get(index));
             }
@@ -269,29 +341,29 @@ public class Main extends Application {
 
         @Override
         public void showAddedTask(Task task, int count) {
-            appendBubble("Got it. I've added this task:\n  " + task
-                    + "\nNow you have " + count + " tasks in the list.", false);
+            appendBubble("Logged. Organisation suits you:\n  " + task
+                    + "\nActive tasks: " + count + ".", false);
         }
 
         @Override
         public void showMarked(Task task) {
-            appendBubble("Nice! I've marked this task as done:\n  " + task, false);
+            appendBubble("Marked complete. Miracles do happen:\n  " + task, false);
         }
 
         @Override
         public void showUnmarked(Task task) {
-            appendBubble("OK, I've marked this task as not done yet:\n  " + task, false);
+            appendBubble("Marked incomplete. Back to the grind:\n  " + task, false);
         }
 
         @Override
         public void showDeletedTask(Task task, int count) {
-            appendBubble("Noted. I've removed this task:\n  " + task
-                    + "\nNow you have " + count + " tasks in the list.", false);
+            appendBubble("Removed. One less thing to avoid:\n  " + task
+                    + "\nActive tasks: " + count + ".", false);
         }
 
         @Override
         public void showBye() {
-            appendBubble("Bye. Hope to see you again soon!", false);
+            appendBubble("EDITH signing off. Try not to create chaos without me, Peter.", false);
         }
     }
 }
