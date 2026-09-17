@@ -15,8 +15,16 @@ public class Edith {
      */
     public static void main(String[] args) {
         Storage storage = new Storage(TASK_FILE);
-        TaskList tasks = storage.load();
         Ui ui = new Ui();
+        TaskList tasks;
+        try {
+            tasks = storage.load();
+        } catch (EdithException error) {
+            ui.showWelcome();
+            ui.showError(error.getMessage());
+            ui.showLine();
+            return;
+        }
 
         ui.showWelcome();
         runCommandLoop(tasks, ui, storage);

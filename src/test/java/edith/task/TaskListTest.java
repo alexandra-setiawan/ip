@@ -1,6 +1,8 @@
 package edith.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -23,6 +25,15 @@ class TaskListTest {
         tasks.add(new ToDo("read book"));
 
         assertEquals(List.of(), tasks.findMatchingIndices("exercise"));
+    }
+
+    @Test
+    void hasDuplicate_sameTaskDetailsIgnoringCase_returnsTrue() {
+        TaskList tasks = new TaskList();
+        tasks.add(new Deadline("Submit report", "June 6th"));
+
+        assertTrue(tasks.hasDuplicate(new Deadline("submit REPORT", "june 6th")));
+        assertFalse(tasks.hasDuplicate(new Deadline("submit report", "June 7th")));
     }
 
     @Test

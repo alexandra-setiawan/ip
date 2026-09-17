@@ -30,6 +30,12 @@ public class Deadline extends Task {
     }
 
     @Override
+    public boolean hasSameDetails(Task other) {
+        return super.hasSameDetails(other)
+                && normalize(by).equals(normalize(((Deadline) other).by));
+    }
+
+    @Override
     protected String getTypeCode() {
         return "D";
     }

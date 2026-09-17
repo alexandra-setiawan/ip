@@ -1,8 +1,12 @@
 package edith.command;
 
+import java.util.List;
+
+import edith.EdithException;
 import edith.Storage;
 import edith.Ui;
 import edith.task.SortOrder;
+import edith.task.Task;
 import edith.task.TaskList;
 
 /** Sorts and saves Edith's task list. */
@@ -19,9 +23,15 @@ public class SortCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws EdithException {
+        List<Task> previousOrder = tasks.getTasksInCurrentOrder();
         tasks.sort(sortOrder);
-        storage.save(tasks);
+        try {
+            storage.save(tasks);
+        } catch (EdithException error) {
+            tasks.restoreOrder(previousOrder);
+            throw error;
+        }
         ui.showList(tasks);
     }
 }

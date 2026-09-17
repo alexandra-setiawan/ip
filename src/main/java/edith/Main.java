@@ -30,7 +30,7 @@ public class Main extends Application {
             + "|_____\\__,_|_|\\__|_| |_|";
 
     private final Storage storage = new Storage(TASK_FILE);
-    private final TaskList tasks = storage.load();
+    private TaskList tasks;
     private final ChatUi ui = new ChatUi();
     private TextField commandField;
     private Button sendButton;
@@ -71,7 +71,14 @@ public class Main extends Application {
         Scene scene = new Scene(root, 700, 620);
         scene.getStylesheets().add(Main.class.getResource("/edith/gui.css").toExternalForm());
 
-        ui.showWelcome();
+        try {
+            tasks = storage.load();
+            ui.showWelcome();
+        } catch (EdithException error) {
+            ui.showError(error.getMessage());
+            commandField.setDisable(true);
+            sendButton.setDisable(true);
+        }
         stage.setTitle("Edith • Direct Messages");
         stage.setMinWidth(520);
         stage.setMinHeight(480);
@@ -103,7 +110,7 @@ public class Main extends Application {
 
     /** Sends the current command to Edith and displays its response. */
     private void sendCommand() {
-        String commandText = commandField.getText().trim();
+        String commandText = commandField.getText();
         if (commandText.isEmpty()) {
             return;
         }
@@ -118,10 +125,8 @@ public class Main extends Application {
                 commandField.setDisable(true);
                 sendButton.setDisable(true);
             }
-        } catch (EdithException | RuntimeException error) {
-            ui.showError(error instanceof EdithException
-                    ? error.getMessage()
-                    : "OOPS!!! Please enter a valid command.");
+        } catch (EdithException error) {
+            ui.showError(error.getMessage());
         }
     }
 

@@ -12,7 +12,8 @@ import java.util.Locale;
 
 /** Parses and formats the date and time text used by Edith's dated tasks. */
 public final class DateTimeParser {
-    private static final DateTimeFormatter DATE_TIME_INPUT = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
+    private static final DateTimeFormatter DATE_TIME_INPUT = DateTimeFormatter.ofPattern("d/M/uuuu HHmm")
+            .withResolverStyle(ResolverStyle.STRICT);
     private static final DateTimeFormatter DATE_INPUT = DateTimeFormatter.ofPattern("uuuu-MM-dd")
             .withResolverStyle(ResolverStyle.STRICT);
     private static final DateTimeFormatter[] NATURAL_DATE_TIME_INPUTS = {
@@ -90,6 +91,27 @@ public final class DateTimeParser {
         return parsedDateTime == null ? parseMonthDay(normalizedText) : parsedDateTime;
     }
 
+    /**
+     * Parses a time without a date.
+     *
+     * @param text time text supplied by the user
+     * @return parsed time, or null when the text is not a supported time
+     */
+    public static LocalTime parseTimeOnly(String text) {
+        DateTimeFormatter[] formatters = {
+            createNaturalFormatter("ha"),
+            createNaturalFormatter("h:mma")
+        };
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                return LocalTime.parse(text, formatter);
+            } catch (DateTimeParseException ignored) {
+                // Try the next supported format.
+            }
+        }
+        return null;
+    }
+
     /** Formats a parsed date-time for display. */
     public static String format(LocalDateTime dateTime) {
         assert dateTime != null : "Date-time to format must not be null";
@@ -104,7 +126,8 @@ public final class DateTimeParser {
         return new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern(pattern)
-                .toFormatter(Locale.ENGLISH);
+                .toFormatter(Locale.ENGLISH)
+                .withResolverStyle(ResolverStyle.STRICT);
     }
 
     /** Parses a complete natural-language date and time. */

@@ -30,6 +30,47 @@ public class TaskList implements Iterable<Task> {
         nextInsertionOrder = Math.max(nextInsertionOrder, insertionOrder + 1);
     }
 
+    /**
+     * Inserts a task at a zero-based index without changing its saved insertion order.
+     *
+     * @param index zero-based location at which to insert the task
+     * @param task task to insert
+     */
+    public void add(int index, Task task) {
+        assert task != null : "Task list must not contain null tasks";
+        tasks.add(index, task);
+    }
+
+    /**
+     * Returns whether this list already contains a task with the same details.
+     *
+     * @param task task to check
+     * @return true if an identical task is already in the list
+     */
+    public boolean hasDuplicate(Task task) {
+        return tasks.stream().anyMatch(existingTask -> existingTask.hasSameDetails(task));
+    }
+
+    /**
+     * Returns an immutable snapshot of the current display order.
+     *
+     * @return immutable task list in its current display order
+     */
+    public List<Task> getTasksInCurrentOrder() {
+        return List.copyOf(tasks);
+    }
+
+    /**
+     * Restores a previously captured display order.
+     *
+     * @param previousOrder order to restore
+     */
+    public void restoreOrder(List<Task> previousOrder) {
+        assert previousOrder != null : "Previous task order must not be null";
+        tasks.clear();
+        tasks.addAll(previousOrder);
+    }
+
     /** Returns a task by zero-based index. */
     public Task get(int index) {
         return tasks.get(index);

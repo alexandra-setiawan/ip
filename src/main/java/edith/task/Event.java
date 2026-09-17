@@ -39,6 +39,13 @@ public class Event extends Task {
     }
 
     @Override
+    public boolean hasSameDetails(Task other) {
+        return super.hasSameDetails(other)
+                && normalize(from).equals(normalize(((Event) other).from))
+                && normalize(to).equals(normalize(((Event) other).to));
+    }
+
+    @Override
     protected String getTypeCode() {
         return "E";
     }

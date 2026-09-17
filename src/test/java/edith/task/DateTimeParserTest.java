@@ -35,6 +35,7 @@ class DateTimeParserTest {
     void parse_invalidOrImpossibleDate_returnsNull() {
         assertNull(DateTimeParser.parse("not a date"));
         assertNull(DateTimeParser.parse("2026-02-30"));
+        assertNull(DateTimeParser.parse("30/2/2026 1200"));
     }
 
     @Test

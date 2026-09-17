@@ -183,15 +183,22 @@ _______________________________________________________________________________
 _______________________________________________________________________________
 ```
 
-### Test case: reject invalid commands
+### Test case: reject invalid commands and task data
 
-Aim: Verify that Edith reports invalid task and sort commands without ending the session.
+Aim: Verify that malformed command spacing, missing parameters, invalid dates, invalid task numbers, duplicate tasks,
+and invalid event time ranges are reported without ending the session.
 
 Input:
 ```text
-todo
-blah
-sort newest
+ todo buy milk
+todo  buy milk
+deadline pay bill
+deadline pay bill /by 2026-02-30
+event meeting /from 2026-06-06T16:00 /to 4pm
+mark 0
+todo buy milk
+todo buy milk
+delete 2
 bye
 ```
 
@@ -208,13 +215,33 @@ _______________________________________________________________________________
 	What can I do for you?
 _______________________________________________________________________________
 _______________________________________________________________________________
-	OOPS!!! The description of a todo cannot be empty.
+	OOPS!!! Commands must not begin or end with spaces.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	OOPS!!! I'm sorry, but I don't know what that means :-(
+	OOPS!!! Use exactly one space between command parts.
 _______________________________________________________________________________
 _______________________________________________________________________________
-	OOPS!!! That sort order is not available. Enter help to see the options.
+	OOPS!!! Invalid deadline command. Enter help to see its format.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	OOPS!!! Please enter a valid deadline.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	OOPS!!! An event's end date/time must be after its start date/time.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	OOPS!!! The mark command needs a positive task number.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	Got it. I've added this task:
+	  [T][ ] buy milk
+	Now you have 1 tasks in the list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	OOPS!!! An identical task is already in your list.
+_______________________________________________________________________________
+_______________________________________________________________________________
+	OOPS!!! That task number does not exist.
 _______________________________________________________________________________
 _______________________________________________________________________________
 	Bye. Hope to see you again soon!

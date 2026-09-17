@@ -86,6 +86,18 @@ public class Task {
     }
 
     /**
+     * Returns whether another task has the same user-visible details as this task.
+     *
+     * @param other task to compare
+     * @return true when the task type and description are the same, ignoring case
+     */
+    public boolean hasSameDetails(Task other) {
+        return other != null
+                && getClass().equals(other.getClass())
+                && normalize(description).equals(normalize(other.description));
+    }
+
+    /**
      * Returns a simple representation suitable for saving to disk.
      *
      * @return task type, completion status, and description
@@ -102,6 +114,11 @@ public class Task {
      */
     protected String getTypeCode() {
         return "T";
+    }
+
+    /** Returns a comparison value that ignores insignificant letter case and spacing. */
+    protected static String normalize(String text) {
+        return text.trim().replaceAll("\\s+", " ").toLowerCase(Locale.ROOT);
     }
 
     /**
