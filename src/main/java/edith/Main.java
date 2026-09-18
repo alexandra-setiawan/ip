@@ -1,6 +1,6 @@
 package edith;
 
-import java.nio.file.Path;
+import java.util.Objects;
 
 import edith.command.Command;
 import edith.command.Parser;
@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -31,14 +30,13 @@ import javafx.stage.Stage;
 /** Provides a graphical direct-message interface for interacting with Edith. */
 public class Main extends Application {
     private static final String TASK_FILE = "./data/edith.txt";
-    private static final String LOGO_PATH = "build/resources/images/logo.jpg";
-    private static final Rectangle2D LOGO_VIEWPORT = new Rectangle2D(145, 800, 1400, 1400);
     private static final double HEADER_LOGO_SIZE = 32;
     private static final double MESSAGE_LOGO_SIZE = 28;
 
     private final Storage storage = new Storage(TASK_FILE);
     private TaskList tasks;
-    private final Image logoImage = new Image(Path.of(LOGO_PATH).toUri().toString());
+    private final Image logoImage = new Image(Objects.requireNonNull(
+            Main.class.getResource("/edith/images/logo.png")).toExternalForm());
     private final ChatUi ui = new ChatUi(logoImage);
     private TextField commandField;
     private Button sendButton;
@@ -143,10 +141,9 @@ public class Main extends Application {
         connectionStatus.setText("Offline");
     }
 
-    /** Creates a cropped, square view of the supplied EDITH logo. */
+    /** Creates a square view of the supplied EDITH logo. */
     private static ImageView createLogoView(Image image, double size) {
         ImageView logo = new ImageView(image);
-        logo.setViewport(LOGO_VIEWPORT);
         logo.setFitWidth(size);
         logo.setFitHeight(size);
         logo.setPreserveRatio(true);
@@ -166,8 +163,7 @@ public class Main extends Application {
         graphics.arc(radius, radius, radius, radius, 0, 360);
         graphics.closePath();
         graphics.clip();
-        graphics.drawImage(image, LOGO_VIEWPORT.getMinX(), LOGO_VIEWPORT.getMinY(), LOGO_VIEWPORT.getWidth(),
-                LOGO_VIEWPORT.getHeight(), 0, 0, size, size);
+        graphics.drawImage(image, 0, 0, size, size);
         graphics.restore();
         return canvas.snapshot(null, null);
     }

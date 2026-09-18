@@ -20,8 +20,8 @@ the console entry point directly to verify Edith's command behavior.
 
 Manual GUI checks after visual changes:
 
-- The title bar uses the mock-up's #2d67c8-to-#1e488f blue gradient and displays the cropped logo from
-  `build/resources/images/logo.jpg` as a circle in both the operating system and app title bars, followed by
+- The title bar uses the mock-up's #2d67c8-to-#1e488f blue gradient and displays the bundled logo from
+  `src/main/resources/edith/images/logo.png` as a circle in both the operating system and app title bars, followed by
   the E.D.I.T.H. name, subtitle, and green Online indicator.
 - The opening message addresses Peter and tells the user to send `help` for command syntax; no separate
   assistant bar or navigation sidebar is present.
